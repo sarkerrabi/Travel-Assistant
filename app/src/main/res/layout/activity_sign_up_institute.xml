@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_25sdp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Welcome!"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvInstruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Fill up the form below to register your indore map"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <TextView
+            android:id="@+id/tvGoUserSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone"
+            android:text="Sign up as user instead?"
+            android:textColor="#2196F3"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@id/tvInstruction" />
+
+        <EditText
+            android:id="@+id/etInstitutionName"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Institution Name"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/tvGoUserSignUp" />
+
+        <TextView
+            android:id="@+id/etAddress"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Address"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/etInstitutionName" />
+
+        <ImageView
+            android:id="@+id/ivPick"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_gps"
+            app:layout_constraintBottom_toBottomOf="@+id/etAddress"
+            app:layout_constraintStart_toEndOf="@+id/etAddress"
+            app:layout_constraintTop_toTopOf="@+id/etAddress" />
+
+        <TextView
+            android:id="@+id/tvPick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick form map"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPick"
+            app:layout_constraintStart_toEndOf="@+id/ivPick"
+            app:layout_constraintTop_toTopOf="@+id/ivPick" />
+
+        <TextView
+            android:id="@+id/tvAddressTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Enter Searchable Addresses:(For users to find your institute"
+            android:textColor="#656363"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@id/etInsEmail"
+            app:layout_constraintStart_toStartOf="@+id/etInsEmail"
+            app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+        <EditText
+            android:id="@+id/etAddress1"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Search  Address 1"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressTitle" />
+
+        <EditText
+            android:id="@+id/etAddress2"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Search  Address 2 (Optional)"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/etAddress1" />
+
+        <EditText
+            android:id="@+id/etInsEmail"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Institutional Email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/etAddress2" />
+
+        <TextView
+            android:id="@+id/tvPasswordTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="*It will be checked by the app admin for final approval."
+            android:textColor="#656363"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@id/etInsEmail"
+            app:layout_constraintStart_toStartOf="@+id/etInsEmail"
+            app:layout_constraintTop_toBottomOf="@+id/etInsEmail" />
+
+        <EditText
+            android:id="@+id/ConfirmPassword"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/border"
+            android:hint="Password"
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="@id/tvInstruction"
+            app:layout_constraintTop_toBottomOf="@+id/tvPasswordTitle" />
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="#4E4D4D"
+            android:padding="@dimen/_5sdp"
+            android:text="Sign up"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ConfirmPassword" />
+
+        <TextView
+            android:id="@+id/tvGoBackLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="Already have an account ? Login Now"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnSignUp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
