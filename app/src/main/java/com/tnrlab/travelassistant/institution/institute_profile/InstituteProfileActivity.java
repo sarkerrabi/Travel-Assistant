@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute_profile;
+package com.tnrlab.travelassistant.institution.institute_profile;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,9 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.loader.Loader;
-import com.tnrlab.travelassistant.login.LoginActivity;
 import com.tnrlab.travelassistant.models.institute.Institution;
 
 import butterknife.BindView;

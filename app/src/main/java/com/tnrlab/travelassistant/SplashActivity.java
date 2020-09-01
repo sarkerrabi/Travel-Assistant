@@ -10,9 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.tnrlab.travelassistant.institute.InstituteMainActivity;
-import com.tnrlab.travelassistant.login.LoginActivity;
+import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
+import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.shared_db.SharedDB;
 
 import butterknife.BindView;

@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute_signup;
+package com.tnrlab.travelassistant.institution.institute_signup;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.tnrlab.travelassistant.models.institute.Institution;

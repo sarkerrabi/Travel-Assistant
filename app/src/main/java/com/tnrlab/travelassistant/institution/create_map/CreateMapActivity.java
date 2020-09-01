@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.create_map;
+package com.tnrlab.travelassistant.institution.create_map;
 
 import android.app.Activity;
 import android.content.Intent;

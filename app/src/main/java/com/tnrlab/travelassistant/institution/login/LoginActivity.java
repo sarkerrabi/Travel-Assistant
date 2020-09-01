@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.login;
+package com.tnrlab.travelassistant.institution.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.tnrlab.travelassistant.R;
 import com.tnrlab.travelassistant.forgetpass.ForgetActivity;
-import com.tnrlab.travelassistant.institute.InstituteMainActivity;
-import com.tnrlab.travelassistant.institute_signup.SignUpInstituteActivity;
+import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
+import com.tnrlab.travelassistant.institution.institute_signup.SignUpInstituteActivity;
 import com.tnrlab.travelassistant.loader.Loader;
 import com.tnrlab.travelassistant.models.institute.Institution;
 import com.tnrlab.travelassistant.shared_db.SharedDB;

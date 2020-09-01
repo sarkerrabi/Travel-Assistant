@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute;
+package com.tnrlab.travelassistant.institution.institute;
 
 import android.app.Activity;
 

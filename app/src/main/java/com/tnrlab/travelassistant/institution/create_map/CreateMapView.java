@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.create_map;
+package com.tnrlab.travelassistant.institution.create_map;
 
 public interface CreateMapView {
 

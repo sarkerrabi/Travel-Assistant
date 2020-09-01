@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.show_map;
+package com.tnrlab.travelassistant.institution.show_map;
 
 import android.app.Activity;
 

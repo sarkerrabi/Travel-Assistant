@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.login;
+package com.tnrlab.travelassistant.institution.login;
 
 import com.tnrlab.travelassistant.models.institute.Institution;
 

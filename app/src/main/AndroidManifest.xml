@@ -13,12 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".show_map.ShowMapActivity"></activity>
-        <activity android:name=".institute_profile.InstituteProfileActivity"></activity>
-        <activity android:name=".institute.InstituteMainActivity" />
-        <activity android:name=".create_map.CreateMapActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".institute_signup.SignUpInstituteActivity" />
+        <activity android:name=".institution.show_map.ShowMapActivity"></activity>
+        <activity android:name=".institution.institute_profile.InstituteProfileActivity"></activity>
+        <activity android:name=".institution.institute.InstituteMainActivity" />
+        <activity android:name=".institution.create_map.CreateMapActivity" />
+        <activity android:name=".institution.login.LoginActivity" />
+        <activity android:name=".institution.institute_signup.SignUpInstituteActivity" />
         <activity android:name=".user_signup.SignUpActivity" />
         <activity
             android:name=".MainActivity"

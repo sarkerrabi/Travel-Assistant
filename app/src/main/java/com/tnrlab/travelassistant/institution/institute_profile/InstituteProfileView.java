@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute_profile;
+package com.tnrlab.travelassistant.institution.institute_profile;
 
 import com.tnrlab.travelassistant.models.institute.Institution;
 

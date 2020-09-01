@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.show_map;
+package com.tnrlab.travelassistant.institution.show_map;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,7 +20,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.login.LoginActivity;
+import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.models.create_map.MapDataModel;
 import com.tnrlab.travelassistant.models.institute.Institution;
 

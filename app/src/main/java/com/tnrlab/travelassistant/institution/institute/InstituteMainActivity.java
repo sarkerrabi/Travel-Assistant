@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute;
+package com.tnrlab.travelassistant.institution.institute;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.create_map.CreateMapActivity;
-import com.tnrlab.travelassistant.institute_profile.InstituteProfileActivity;
-import com.tnrlab.travelassistant.login.LoginActivity;
+import com.tnrlab.travelassistant.institution.create_map.CreateMapActivity;
+import com.tnrlab.travelassistant.institution.institute_profile.InstituteProfileActivity;
+import com.tnrlab.travelassistant.institution.login.LoginActivity;
+import com.tnrlab.travelassistant.institution.show_map.ShowMapActivity;
 import com.tnrlab.travelassistant.models.institute.Institution;
 import com.tnrlab.travelassistant.shared_db.SharedDB;
-import com.tnrlab.travelassistant.show_map.ShowMapActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

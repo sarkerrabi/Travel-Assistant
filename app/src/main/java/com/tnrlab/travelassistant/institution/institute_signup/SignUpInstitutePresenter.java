@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute_signup;
+package com.tnrlab.travelassistant.institution.institute_signup;
 
 import android.app.Activity;
 import android.widget.Toast;

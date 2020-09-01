@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.institute_signup;
+package com.tnrlab.travelassistant.institution.institute_signup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +18,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
 import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.institute.InstituteMainActivity;
+import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
+import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.loader.Loader;
-import com.tnrlab.travelassistant.login.LoginActivity;
 import com.tnrlab.travelassistant.models.institute.Institution;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
-package com.tnrlab.travelassistant.institute_profile;
+package com.tnrlab.travelassistant.institution.institute_profile;
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 

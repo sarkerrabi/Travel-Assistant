@@ -1,7 +1,6 @@
-package com.tnrlab.travelassistant.login;
+package com.tnrlab.travelassistant.institution.login;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tnrlab.travelassistant.models.institute.Institution;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LoginPresenter {
     Activity activity;
@@ -58,11 +55,9 @@ public class LoginPresenter {
     }
 
     private void checkIsUserFound(FirebaseUser user, int loginType) {
-        if (loginType == 1){
+        if (loginType == 1) {
             insCheck(user.getUid());
         }
-
-
 
 
     }
@@ -98,8 +93,6 @@ public class LoginPresenter {
                 if (dataSnapshot.exists()) {
                     Institution institution = dataSnapshot.getValue(Institution.class);
                     loginView.signInInstituteSuccessful(institution);
-
-                    return;
                 } else {
                     loginView.onLoginFailed("Institution not registered. Please sign up first.");
                 }
