@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.forgetpass;
+package com.tnrlab.travelassistant.forget_pass;
 
 import android.os.Bundle;
 import android.text.TextUtils;

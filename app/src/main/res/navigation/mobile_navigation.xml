@@ -18,14 +18,19 @@
         tools:layout="@layout/fragment_share" />
 
     <fragment
-        android:id="@+id/nav_created_path"
+        android:id="@+id/nav_created_path_history"
         android:name="com.tnrlab.travelassistant.ui.send.SendFragment"
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.tnrlab.travelassistant.ui.profile.UserProfileFragment"
-        android:label="user_profile_fragment"
+        android:label="Profile"
         tools:layout="@layout/user_profile_fragment" />
+    <fragment
+        android:id="@+id/nav_create_path"
+        android:name="com.tnrlab.travelassistant.ui.create_path.CreatePathFragment"
+        android:label="Create Route Path"
+        tools:layout="@layout/create_path_fragment" />
 
 </navigation>

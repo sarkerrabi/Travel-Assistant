@@ -14,7 +14,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.tnrlab.travelassistant.MainActivity;
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.forgetpass.ForgetActivity;
+import com.tnrlab.travelassistant.forget_pass.ForgetActivity;
 import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.institution.institute_signup.SignUpInstituteActivity;
 import com.tnrlab.travelassistant.loader.Loader;
