@@ -121,10 +121,11 @@
                 android:id="@+id/rbUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:buttonTint="#3F51B5"
+                android:background="@android:color/white"
+                android:buttonTint="@android:color/black"
+                android:padding="@dimen/_9sdp"
                 android:text="User"
-                android:visibility="gone" />
+                android:textColor="@android:color/black" />
 
             <RadioButton
                 android:id="@+id/rbInstitute"

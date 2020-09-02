@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9EFE5"
     tools:context=".forgetpass.ForgetActivity">
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_32sdp"
-        android:background="?attr/actionModeBackground"
-        app:srcCompat="@drawable/user" />
+        android:background="@drawable/user"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/llLog"

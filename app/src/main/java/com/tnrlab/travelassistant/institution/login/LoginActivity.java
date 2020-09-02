@@ -12,13 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
+import com.tnrlab.travelassistant.MainActivity;
 import com.tnrlab.travelassistant.R;
 import com.tnrlab.travelassistant.forgetpass.ForgetActivity;
 import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.institution.institute_signup.SignUpInstituteActivity;
 import com.tnrlab.travelassistant.loader.Loader;
 import com.tnrlab.travelassistant.models.institute.Institution;
+import com.tnrlab.travelassistant.models.user.User;
 import com.tnrlab.travelassistant.shared_db.SharedDB;
+import com.tnrlab.travelassistant.user_signup.SignUpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         loader = new Loader(LoginActivity.this);
         sharedDB = new SharedDB(LoginActivity.this);
         loginPresenter = new LoginPresenter(LoginActivity.this, this);
-        rbInstitute.setChecked(true);
+        rbUser.setChecked(true);
     }
 
 
@@ -87,6 +90,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         if (rbInstitute.isChecked()) {
             loginPresenter.loginNow(email, password, 1);
+        } else if (rbUser.isChecked()) {
+            loginPresenter.loginNow(email, password, 2);
+
         }
 
 
@@ -102,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         Gson gson = new Gson();
         String insGson = gson.toJson(institution);
         intent.putExtra("institute", insGson);
-        sharedDB.saveUserInfo(insGson);
+        sharedDB.saveInstituteUserInfo(insGson);
         if (loader != null) {
             loader.hideDialog();
         }
@@ -110,6 +116,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         startActivity(intent);
 
 
+    }
+
+    @Override
+    public void signInUserSuccessful(User user) {
+        sharedDB.saveUserTypeID(2);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Gson gson = new Gson();
+        String insGson = gson.toJson(user);
+        intent.putExtra("user", insGson);
+        sharedDB.saveUserInfo(insGson);
+        if (loader != null) {
+            loader.hideDialog();
+        }
+
+        startActivity(intent);
     }
 
     @Override
@@ -126,12 +147,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         switch (view.getId()) {
             case R.id.tvForgetPass:
                 startActivity(new Intent(LoginActivity.this, ForgetActivity.class));
-                finish();
-
                 break;
             case R.id.tvSignUp:
-                startActivity(new Intent(LoginActivity.this, SignUpInstituteActivity.class));
-                finish();
+                if (rbUser.isChecked()) {
+                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                } else {
+                    startActivity(new Intent(LoginActivity.this, SignUpInstituteActivity.class));
+                }
+
                 break;
         }
     }

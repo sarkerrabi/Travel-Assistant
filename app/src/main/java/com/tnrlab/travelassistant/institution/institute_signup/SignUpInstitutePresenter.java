@@ -1,7 +1,6 @@
 package com.tnrlab.travelassistant.institution.institute_signup;
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -42,8 +41,8 @@ public class SignUpInstitutePresenter {
                         } else {
                             // If sign in fails, display a message to the user.
                             //  Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(activity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(activity, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();*/
                             signUpForInstitutionView.onSignUpFailed("Authentication failed.");
                         }
 

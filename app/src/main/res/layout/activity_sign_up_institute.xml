@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F9EFE5"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,28 +12,16 @@
         android:paddingBottom="@dimen/_25sdp">
 
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Welcome!"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/tvInstruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="24dp"
             android:text="Fill up the form below to register your indore map"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvGoUserSignUp"
@@ -50,10 +38,11 @@
         <EditText
             android:id="@+id/etInstitutionName"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Institution Name"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/tvGoUserSignUp" />
 
@@ -64,6 +53,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Address"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/etInstitutionName" />
 
@@ -102,31 +92,34 @@
         <EditText
             android:id="@+id/etAddress1"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Search  Address 1"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/tvAddressTitle" />
 
         <EditText
             android:id="@+id/etAddress2"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Search  Address 2 (Optional)"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/etAddress1" />
 
         <EditText
             android:id="@+id/etInsEmail"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Institutional Email"
             android:inputType="textEmailAddress"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/etAddress2" />
 
@@ -145,11 +138,12 @@
         <EditText
             android:id="@+id/ConfirmPassword"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/border"
             android:hint="Password"
             android:inputType="textPassword"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/tvPasswordTitle" />
 
@@ -157,7 +151,7 @@
             android:id="@+id/btnSignUp"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="32dp"
             android:background="#4E4D4D"
             android:padding="@dimen/_5sdp"
             android:text="Sign up"

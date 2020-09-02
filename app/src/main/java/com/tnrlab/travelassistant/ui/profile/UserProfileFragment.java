@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.ui.institute;
+package com.tnrlab.travelassistant.ui.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,24 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.tnrlab.travelassistant.R;
 
-public class InstituteFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
-    private InstituteViewModel mViewModel;
+    private UserProfileViewModel mViewModel;
 
-    public static InstituteFragment newInstance() {
-        return new InstituteFragment();
+    public static UserProfileFragment newInstance() {
+        return new UserProfileFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.institute_fragment, container, false);
+        return inflater.inflate(R.layout.user_profile_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(InstituteViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
         // TODO: Use the ViewModel
     }
 

@@ -55,9 +55,15 @@ public class SplashActivity extends AppCompatActivity {
                     // start the home screen if the back button wasn't pressed already
 
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        if (sharedDB.getUserType() == 1 && sharedDB.getUserInfo() != null) {
+                        if (sharedDB.getUserType() == 1 && sharedDB.getInstituteUserInfo() != null) {
                             Intent intent = new Intent(SplashActivity.this, InstituteMainActivity.class);
-                            intent.putExtra("institute", sharedDB.getUserInfo());
+                            intent.putExtra("institute", sharedDB.getInstituteUserInfo());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        } else if (sharedDB.getUserType() == 2 && sharedDB.getUserInfo() != null) {
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            intent.putExtra("user", sharedDB.getUserInfo());
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

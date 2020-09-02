@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -18,7 +19,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
 import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 import com.tnrlab.travelassistant.R;
-import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.loader.Loader;
 import com.tnrlab.travelassistant.models.institute.Institution;
@@ -56,6 +56,8 @@ public class SignUpInstituteActivity extends AppCompatActivity implements SignUp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_key));
+        getSupportActionBar().setTitle("Sign Up as institute user");
+
         setContentView(R.layout.activity_sign_up_institute);
         ButterKnife.bind(this);
 
@@ -183,7 +185,8 @@ public class SignUpInstituteActivity extends AppCompatActivity implements SignUp
     public void onSaveUserDBSuccessful() {
         loader.hideDialog();
         Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(SignUpInstituteActivity.this, InstituteMainActivity.class));
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(SignUpInstituteActivity.this, LoginActivity.class));
         finish();
 
 

@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tnrlab.travelassistant.models.institute.Institution;
+import com.tnrlab.travelassistant.models.user.User;
 
 public class LoginPresenter {
     Activity activity;
@@ -57,34 +58,33 @@ public class LoginPresenter {
     private void checkIsUserFound(FirebaseUser user, int loginType) {
         if (loginType == 1) {
             insCheck(user.getUid());
+        } else if (loginType == 2) {
+            userCheck(user.getUid());
         }
 
 
     }
 
 
-/*    public void userCheck(String uid) {
+    public void userCheck(String uid) {
         mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                    loginView.onUserFoundInDb();
-                else {
-                    Toast.makeText(activity, "No such account exists. Sign up please.",
-                            Toast.LENGTH_SHORT).show();
-                    loginView.onLoginFailed("No such account exists. Sign up please.");
+                if (dataSnapshot.exists()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    loginView.signInUserSuccessful(user);
+                } else {
+                    loginView.onLoginFailed("User is not registered. Sign up please.");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "onCancelled: (user) database existence query failed", databaseError.toException());
-                Toast.makeText(activity, "Please try again.",
-                        Toast.LENGTH_SHORT).show();
-                loginView.onLoginFailed("Please try again.");
+
+                loginView.onLoginFailed("Please check your internet connection and try again.");
             }
         });
-    }*/
+    }
 
     public void insCheck(String uid) {
         mDatabase.child("institutions").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,7 +94,7 @@ public class LoginPresenter {
                     Institution institution = dataSnapshot.getValue(Institution.class);
                     loginView.signInInstituteSuccessful(institution);
                 } else {
-                    loginView.onLoginFailed("Institution not registered. Please sign up first.");
+                    loginView.onLoginFailed("Institution is not registered. Please sign up first.");
                 }
 
             }

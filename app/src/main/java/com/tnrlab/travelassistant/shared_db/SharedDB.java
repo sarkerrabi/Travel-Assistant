@@ -23,6 +23,20 @@ public class SharedDB {
         editor.apply();
     }
 
+    public int getUserType() {
+        return sharedPreferences.getInt("USER_TYPE", 0);
+    }
+
+    public void saveInstituteUserInfo(String userInfo) {
+        editor.putString("INSTITUTE_USER_INFO", userInfo);
+        editor.apply();
+    }
+
+    public String getInstituteUserInfo() {
+        return sharedPreferences.getString("INSTITUTE_USER_INFO", null);
+    }
+
+
     public void saveUserInfo(String userInfo) {
         editor.putString("USER_INFO", userInfo);
         editor.apply();
@@ -35,10 +49,6 @@ public class SharedDB {
 
     public void clearUserType() {
         editor.clear().apply();
-    }
-
-    public int getUserType() {
-        return sharedPreferences.getInt("USER_TYPE", 0);
     }
 
     private void clearUser() {
