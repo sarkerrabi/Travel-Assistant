@@ -8,31 +8,19 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
+
         <item
-            android:id="@+id/nav_payment_history"
-            android:icon="@drawable/ic_payment_black_24dp"
-            android:title="@string/payment_history" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_baseline_account_box_24"
+            android:title="@string/menu_profile" />
+
+
         <item
-            android:id="@+id/nav_store_history"
-            android:icon="@drawable/ic_store"
-            android:title="@string/store_history" />
-        <item
-            android:id="@+id/nav_invite_friends"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/invite_friends" />
+            android:id="@+id/nav_created_path"
+            android:icon="@drawable/created_paths"
+            android:title="@string/menu_created_path" />
+
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_send"
-                android:title="@string/menu_send" />
-        </menu>
-    </item>
 
 </menu>

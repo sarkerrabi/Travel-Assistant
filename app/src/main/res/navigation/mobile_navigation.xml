@@ -9,8 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.tnrlab.travelassistant.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
-    </fragment>
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_share"
@@ -19,7 +18,7 @@
         tools:layout="@layout/fragment_share" />
 
     <fragment
-        android:id="@+id/nav_send"
+        android:id="@+id/nav_created_path"
         android:name="com.tnrlab.travelassistant.ui.send.SendFragment"
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />

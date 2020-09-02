@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
 
         startActivity(intent);
+        finish();
 
 
     }
@@ -131,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
 
         startActivity(intent);
+        finish();
     }
 
     @Override

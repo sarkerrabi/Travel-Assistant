@@ -3,12 +3,12 @@ package com.tnrlab.travelassistant;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -16,9 +16,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.tnrlab.travelassistant.models.user.User;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView header;
+    TextView headerSub;
+    User user;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,16 +47,32 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_payment_history, R.id.nav_store_history,
-                R.id.nav_invite_friends, R.id.nav_share, R.id.nav_send)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_created_path)
                 .setDrawerLayout(drawer)
                 .build();
+
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        View myheader = navigationView.getHeaderView(0);
+        header = myheader.findViewById(R.id.nav_header_title);
+        headerSub = myheader.findViewById(R.id.nav_header_sub_title);
+
+        String userString = getIntent().getStringExtra("user");
+
+        if (userString != null) {
+            Gson gson = new Gson();
+            user = gson.fromJson(userString, User.class);
+            header.setText(user.getFullName());
+            headerSub.setText(user.getEmail());
+
+        }
+
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,4 +87,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 }

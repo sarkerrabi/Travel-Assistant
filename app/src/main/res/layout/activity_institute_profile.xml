@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Institutional Emal Address"
+            android:text="Institutional Email Address"
             android:textColor="@android:color/black"
             android:textSize="10sp"
             android:textStyle="bold"

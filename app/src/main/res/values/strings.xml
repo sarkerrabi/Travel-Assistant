@@ -15,11 +15,14 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="menu_created_path">Created Paths</string>
     <string name="payment_history">Payment History</string>
-    <string name="store_history">Store History</string>
+    <string name="store_history">Shared Paths</string>
     <string name="invite_friends">Invite Friends</string>
 
     <string name="mapbox_key">pk.eyJ1Ijoic2Fya2VycmFiaSIsImEiOiJjazZvb3ZieTAwaG0wM2ttOXAxdWp0ZTM1In0.r8xlwcWbg5tMu6feVg-rCA</string>
     <string name="sign_up_message">Don\'t have account? <font color='#2196F3'>Sign Up Here</font></string>
+    <string name="logout">logout</string>
+    <string name="menu_profile">Profile</string>
 
 </resources>
