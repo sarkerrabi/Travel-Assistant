@@ -54,4 +54,35 @@ public class SharedDB {
     private void clearUser() {
         editor.clear().apply();
     }
+
+
+    public void saveStartPlaceInfo(String placeName) {
+        editor.putString("START_PLACE", placeName);
+        editor.apply();
+    }
+
+    public String getStartPlaceInfo() {
+        return sharedPreferences.getString("START_PLACE", null);
+    }
+
+    public void saveRouteID(long routeID) {
+        editor.putLong("ROUTE_ID", routeID);
+        editor.apply();
+    }
+
+    public long getRouteID() {
+        return sharedPreferences.getLong("ROUTE_ID", 0);
+    }
+
+
+    public void saveEndPlaceInfo(String placeName) {
+        editor.putString("END_PLACE", placeName);
+        editor.apply();
+    }
+
+    public String getEndPlaceInfo() {
+        return sharedPreferences.getString("END_PLACE", null);
+    }
+
+
 }

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements
         mapboxMap.getUiSettings().setZoomGesturesEnabled(true);
         mapboxMap.getUiSettings().setScrollGesturesEnabled(true);
         mapboxMap.getUiSettings().setAllGesturesEnabled(true);
-
+        mapboxMap.setMinZoomPreference(14);
         mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override

@@ -31,6 +31,19 @@
         android:id="@+id/nav_create_path"
         android:name="com.tnrlab.travelassistant.ui.create_path.CreatePathFragment"
         android:label="Create Route Path"
-        tools:layout="@layout/create_path_fragment" />
+        tools:layout="@layout/create_path_fragment">
+        <action
+            android:id="@+id/action_nav_create_path_to_routeReviewFragment"
+            app:destination="@id/routeReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/routeReviewFragment"
+        android:name="com.tnrlab.travelassistant.ui.RouteReviewFragment"
+        android:label="route_review_fragment"
+        tools:layout="@layout/route_review_fragment">
+        <action
+            android:id="@+id/action_routeReviewFragment_to_nav_create_path"
+            app:destination="@id/nav_create_path" />
+    </fragment>
 
 </navigation>

@@ -3,10 +3,12 @@ package com.tnrlab.travelassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.amitshekhar.DebugDB;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+        Log.e("DB_DEBUG", "onCreate: " + DebugDB.getAddressLog());
+
 
         sharedDB = new SharedDB(SplashActivity.this);
         Glide.with(this)
