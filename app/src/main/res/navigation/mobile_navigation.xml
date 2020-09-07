@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/routeReviewFragment"
         android:name="com.tnrlab.travelassistant.ui.RouteReviewFragment"
-        android:label="route_review_fragment"
+        android:label="Route Review"
         tools:layout="@layout/route_review_fragment">
         <action
             android:id="@+id/action_routeReviewFragment_to_nav_create_path"

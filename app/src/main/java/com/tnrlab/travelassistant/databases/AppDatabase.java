@@ -7,8 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.tnrlab.travelassistant.models.creaet_path.RoutePath;
+import com.tnrlab.travelassistant.models.creaet_path.RouteReview;
 
-@Database(entities = {RoutePath.class}, version = 6, exportSchema = false)
+@Database(entities = {RoutePath.class, RouteReview.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
@@ -30,4 +31,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RoutePathDao routePathDao();
+
+    public abstract RouteReviewDao routeReviewDao();
+
+
 }

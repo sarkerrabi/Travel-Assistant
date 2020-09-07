@@ -22,17 +22,19 @@ public class RoutePath {
     SensorData sensorData;
 
     //user
+/*
     String uid;
 
     String startAddress;
     String endAddress;
     String descriptions;
+*/
 
     @Ignore
     public RoutePath() {
     }
 
-    public RoutePath(int id, long routePathID, double latitude, double longitude, double altitude, float speed, String timestmp, String timeDetails, String latLan, SensorData sensorData, String uid, String startAddress, String endAddress, String descriptions) {
+    public RoutePath(int id, long routePathID, double latitude, double longitude, double altitude, float speed, String timestmp, String timeDetails, String latLan, SensorData sensorData) {
         this.id = id;
         this.routePathID = routePathID;
         this.latitude = latitude;
@@ -43,10 +45,6 @@ public class RoutePath {
         this.timeDetails = timeDetails;
         this.latLan = latLan;
         this.sensorData = sensorData;
-        this.uid = uid;
-        this.startAddress = startAddress;
-        this.endAddress = endAddress;
-        this.descriptions = descriptions;
     }
 
     public int getId() {
@@ -121,37 +119,6 @@ public class RoutePath {
         this.sensorData = sensorData;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getStartAddress() {
-        return startAddress;
-    }
-
-    public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public String getEndAddress() {
-        return endAddress;
-    }
-
-    public void setEndAddress(String endAddress) {
-        this.endAddress = endAddress;
-    }
-
-    public String getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(String descriptions) {
-        this.descriptions = descriptions;
-    }
 
     public long getRoutePathID() {
         return routePathID;

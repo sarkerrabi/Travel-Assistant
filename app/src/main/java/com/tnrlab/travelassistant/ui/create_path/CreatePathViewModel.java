@@ -2,7 +2,6 @@ package com.tnrlab.travelassistant.ui.create_path;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,8 +18,6 @@ import com.tnrlab.travelassistant.models.creaet_path.SensorData;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static android.content.ContentValues.TAG;
 
 
 public class CreatePathViewModel extends ViewModel {
@@ -43,39 +40,28 @@ public class CreatePathViewModel extends ViewModel {
     public LiveData<Accelerometer> getSensorEventLiveData(Context context) {
         Accelerometer accelerometer = new Accelerometer();
         reactiveSensors = new ReactiveSensors(context);
-        reactiveSensors.observeSensor(Sensor.TYPE_GRAVITY)
-                .subscribeOn(Schedulers.computation())
-                .filter(ReactiveSensorEvent::sensorChanged)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ReactiveSensorEvent>() {
-                               @Override
-                               public void accept(ReactiveSensorEvent event) throws Throwable {
-                                   Log.e(TAG, "accept: " + event.sensorValues().toString());
 
+        if (reactiveSensors.hasSensor(Sensor.TYPE_ACCELEROMETER)) {
+            reactiveSensors.observeSensor(Sensor.TYPE_ACCELEROMETER)
+                    .subscribeOn(Schedulers.computation())
+                    .filter(ReactiveSensorEvent::sensorChanged)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<ReactiveSensorEvent>() {
+                                   @Override
+                                   public void accept(ReactiveSensorEvent event) throws Throwable {
+
+                                       float x = event.sensorValues()[0];
+                                       float y = event.sensorValues()[1];
+                                       float z = event.sensorValues()[2];
+                                       //accelerometer.setZ(z);
+
+                                       // sensorEventLiveData.setValue(accelerometer);
+
+                                   }
                                }
-                           }
 
-                );
-
-        reactiveSensors.observeSensor(Sensor.TYPE_GRAVITY)
-                .subscribeOn(Schedulers.computation())
-                .filter(ReactiveSensorEvent::sensorChanged)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ReactiveSensorEvent>() {
-                               @Override
-                               public void accept(ReactiveSensorEvent event) throws Throwable {
-
-                                   float x = event.sensorValues()[0];
-                                   float y = event.sensorValues()[1];
-                                   float z = event.sensorValues()[2];
-                                   //accelerometer.setZ(z);
-
-                                   // sensorEventLiveData.setValue(accelerometer);
-
-                               }
-                           }
-
-                );
+                    );
+        }
 
 
         return sensorEventLiveData;

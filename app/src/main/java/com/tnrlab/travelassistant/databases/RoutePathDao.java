@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.tnrlab.travelassistant.models.creaet_path.RoutePath;
+import com.tnrlab.travelassistant.models.creaet_path.RouteReview;
 
 import java.util.List;
 
@@ -26,4 +27,15 @@ public interface RoutePathDao {
 
     @Query("SELECT * FROM Route_Path WHERE id = :id")
     RoutePath loadPersonById(int id);
+
+/*    @Query("UPDATE Route_Path SET endAddress = :endPlace  WHERE routePathID = :routeID")
+    void updateRoutePathEndAddressWhereRouteID(String endPlace, long routeID);
+
+    @Query("UPDATE Route_Path SET startAddress = :startPlace  WHERE routePathID = :routeID")
+    void updateRoutePathStartAddressWhereRouteID(String startPlace,long routeID);*/
+
+    @Insert
+    long insertRouteReview(RouteReview routeReview);
+
+
 }

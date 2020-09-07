@@ -84,5 +84,21 @@ public class SharedDB {
         return sharedPreferences.getString("END_PLACE", null);
     }
 
+    public void clearRouteDetails() {
+        sharedPreferences.edit().remove("ROUTE_ID").apply();
+        sharedPreferences.edit().remove("START_PLACE").apply();
+        sharedPreferences.edit().remove("END_PLACE").apply();
+
+    }
+
+    public void saveIsLastReviewDone(boolean isDone) {
+        editor.putBoolean("isLastReviewDone", isDone);
+        editor.apply();
+    }
+
+    public boolean isLastReviewDone() {
+        return sharedPreferences.getBoolean("isLastReviewDone", true);
+    }
+
 
 }

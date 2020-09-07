@@ -14,16 +14,22 @@
             android:icon="@drawable/ic_baseline_account_box_24"
             android:title="@string/menu_profile" />
 
+        <item
+            android:id="@+id/nav_create_path"
+            android:icon="@drawable/created_paths"
+            android:title="Create A Route" />
+
 
         <item
             android:id="@+id/nav_created_path_history"
 
-            android:title="@string/menu_created_path" />
+            android:title="Created Route Paths" />
 
         <item
-            android:id="@+id/nav_create_path"
-            android:icon="@drawable/created_paths"
-            android:title="@string/menu_created_path" />
+            android:id="@+id/nav_share"
+
+            android:title="Shared Paths" />
+
 
     </group>
 

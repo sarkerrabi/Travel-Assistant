@@ -36,7 +36,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
@@ -123,6 +122,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mDb = AppDatabase.getInstance(getContext());
         sharedDB = new SharedDB(getContext());
 
+
         mRequestingLocationUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
@@ -136,6 +136,10 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mapView = root.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        if (mStartUpdatesButton.isEnabled()) {
+            mStopUpdatesButton.setEnabled(false);
+        }
 
 
         return root;
@@ -156,6 +160,17 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
             tvData.setText("Sensor Data X=" + data.getX() + " Y=" + data.getY() + " Z=" + data.getZ());
         });
         routePath = new RoutePath();
+
+        if (!sharedDB.isLastReviewDone()
+                && sharedDB.getRouteID() != 0
+                && sharedDB.getStartPlaceInfo() != null
+                && sharedDB.getStartPlaceInfo() != null) {
+
+            Navigation.findNavController(getView()).navigate(R.id.action_nav_create_path_to_routeReviewFragment);
+            Toast.makeText(getContext(), "Please give us your previous path review first.", Toast.LENGTH_SHORT).show();
+
+
+        }
 
         LinearAcceleration linearAcceleration = new LinearAcceleration(1, 2, 3);
         Accelerometer accelerometer = new Accelerometer(4, 5, 6);
@@ -211,7 +226,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mapboxMap.getUiSettings().setZoomGesturesEnabled(true);
         mapboxMap.getUiSettings().setScrollGesturesEnabled(true);
         mapboxMap.getUiSettings().setAllGesturesEnabled(true);
+        mapboxMap.getUiSettings().setCompassEnabled(true);
 
+        mapboxMap.setMinZoomPreference(12);
         mapboxMap.setStyle(Style.MAPBOX_STREETS,
                 new Style.OnStyleLoaded() {
                     @Override
@@ -359,6 +376,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                 updateLocationUI();
             }
         };
+
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
@@ -380,6 +398,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     }
 
     private void updateLocationUI() {
+        sharedDB.saveIsLastReviewDone(false);
         if (mCurrentLocation != null) {
             Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLatitude());
             Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLongitude());
@@ -387,9 +406,12 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
             Long tsLong = System.currentTimeMillis() / 1000;
 
             if (sharedDB.getStartPlaceInfo() == null && !isCalled) {
+                sharedDB.saveRouteID(Common.getUniqueRoutePathID());
                 savePlaceInfo(mCurrentLocation, 0);
                 isCalled = true;
             }
+
+            savePlaceInfo(mCurrentLocation, 1);
 
 
             String timestamp = tsLong.toString();
@@ -404,15 +426,11 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
                 routePath.setAltitude(mCurrentLocation.getAltitude());
                 routePath.setRoutePathID(sharedDB.getRouteID());
-                routePath.setDescriptions("desc");
-                routePath.setEndAddress("end address");
-                routePath.setStartAddress("start address");
                 routePath.setLatitude(mCurrentLocation.getLatitude());
                 routePath.setLongitude(mCurrentLocation.getLongitude());
                 routePath.setTimeDetails(timeDetails);
                 routePath.setTimestmp(timestamp);
                 routePath.setSpeed(mCurrentLocation.getSpeed());
-                routePath.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 routePath.setLatLan(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
 //                mDb.routePathDao().insertRoutePath(routePath);
 
@@ -425,7 +443,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
 
             });
-            mDb.routePathDao().insertRoutePath(routePath);
+            if (routePath.getRoutePathID() != 0) {
+                mDb.routePathDao().insertRoutePath(routePath);
+            }
 
         }
     }
@@ -450,11 +470,10 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                         if (saveState == 0) {
 
                             sharedDB.saveStartPlaceInfo(response.body().features().get(0).placeName());
-                            sharedDB.saveRouteID(Common.getUniqueRoutePathID());
+
 
                         } else if (saveState == 1) {
                             sharedDB.saveEndPlaceInfo(response.body().features().get(0).placeName());
-                            Navigation.findNavController(getView()).navigate(R.id.action_nav_create_path_to_routeReviewFragment);
 
                         }
 
@@ -489,8 +508,18 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                 }
                 break;
             case R.id.stop_updates_button:
+                isCalled = false;
+
                 stopLocationUpdates();
-                savePlaceInfo(mCurrentLocation, 1);
+/*
+                mDb.routePathDao().updateRoutePathStartAddressWhereRouteID(sharedDB.getStartPlaceInfo(),sharedDB.getRouteID());
+                mDb.routePathDao().updateRoutePathEndAddressWhereRouteID(sharedDB.getEndPlaceInfo(),sharedDB.getRouteID());
+*/
+
+
+                Navigation.findNavController(getView()).navigate(R.id.action_nav_create_path_to_routeReviewFragment);
+//                sharedDB.clearRouteDetails();
+
                 break;
         }
     }
@@ -537,4 +566,6 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
+
 }
