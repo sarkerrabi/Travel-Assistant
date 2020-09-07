@@ -12,6 +12,7 @@ import com.amitshekhar.DebugDB;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.shared_db.SharedDB;
@@ -31,6 +32,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();

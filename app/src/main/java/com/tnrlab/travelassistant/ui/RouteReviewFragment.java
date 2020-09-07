@@ -80,9 +80,11 @@ public class RouteReviewFragment extends Fragment {
 
 
         if (mDb.routeReviewDao().insertRouteReview(routeReview) > 0) {
+            mViewModel.sendDataToFirebaseDB(getContext());
             Toast.makeText(getContext(), "Save Successful", Toast.LENGTH_SHORT).show();
             sharedDB.saveIsLastReviewDone(true);
             sharedDB.clearRouteDetails();
+
             try {
                 Navigation.findNavController(getView()).popBackStack();
             } catch (Exception e) {

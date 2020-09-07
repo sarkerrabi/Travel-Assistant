@@ -1,6 +1,7 @@
 package com.tnrlab.travelassistant.databases;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -15,4 +16,7 @@ public interface RouteReviewDao {
 
     @Insert
     long insertRouteReview(RouteReview routeReview);
+
+    @Delete
+    void deleteRouteReview(RouteReview routeReview);
 }
