@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/nav_created_path_history"
-        android:name="com.tnrlab.travelassistant.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        android:name="com.tnrlab.travelassistant.ui.send.ShowCreatedPathFragment"
+        android:label="Created Route History"
+        tools:layout="@layout/fragment_show_created_path" />
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.tnrlab.travelassistant.ui.profile.UserProfileFragment"

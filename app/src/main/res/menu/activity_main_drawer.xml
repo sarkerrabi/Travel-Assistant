@@ -22,8 +22,8 @@
 
         <item
             android:id="@+id/nav_created_path_history"
-
-            android:title="Created Route Paths" />
+            android:icon="@drawable/show_created_paths"
+            android:title="Show Created Route Paths" />
 
         <item
             android:id="@+id/nav_share"
