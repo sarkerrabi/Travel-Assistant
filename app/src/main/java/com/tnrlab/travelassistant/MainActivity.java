@@ -1,7 +1,9 @@
 package com.tnrlab.travelassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.tnrlab.travelassistant.models.user.User;
 
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -69,6 +73,17 @@ public class MainActivity extends AppCompatActivity {
             headerSub.setText(user.getEmail());
 
         }
+
+        MenuItem nav = navigationView.getMenu().findItem(R.id.nav_logout);
+        nav.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+                finish();
+                return false;
+            }
+        });
 
 
     }

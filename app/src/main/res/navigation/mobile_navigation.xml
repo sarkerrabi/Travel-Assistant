@@ -21,7 +21,11 @@
         android:id="@+id/nav_created_path_history"
         android:name="com.tnrlab.travelassistant.ui.send.ShowCreatedPathFragment"
         android:label="Created Route History"
-        tools:layout="@layout/fragment_show_created_path" />
+        tools:layout="@layout/fragment_show_created_path">
+        <action
+            android:id="@+id/action_nav_created_path_history_to_loadAPathFragment"
+            app:destination="@id/loadAPathFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.tnrlab.travelassistant.ui.profile.UserProfileFragment"
@@ -45,5 +49,10 @@
             android:id="@+id/action_routeReviewFragment_to_nav_create_path"
             app:destination="@id/nav_create_path" />
     </fragment>
+    <fragment
+        android:id="@+id/loadAPathFragment"
+        android:name="com.tnrlab.travelassistant.ui.load_a_path.LoadAPathFragment"
+        android:label="Path Details"
+        tools:layout="@layout/load_a_path_fragment" />
 
 </navigation>
