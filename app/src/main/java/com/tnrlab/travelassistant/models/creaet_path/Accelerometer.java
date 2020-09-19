@@ -45,4 +45,14 @@ public class Accelerometer {
     public void setZ(float z) {
         this.z = z;
     }
+
+
+    public double getTotalAcceleration() {
+        double tempX = Math.pow(x, 2);
+        double tempY = Math.pow(y, 2);
+        double tempZ = Math.pow(z, 2);
+        double sumAll = tempX + tempY + tempZ;
+        double acc = Math.sqrt(sumAll);
+        return Math.abs(acc);
+    }
 }

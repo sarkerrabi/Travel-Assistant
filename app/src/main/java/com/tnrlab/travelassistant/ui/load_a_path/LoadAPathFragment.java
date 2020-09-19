@@ -1,10 +1,11 @@
 package com.tnrlab.travelassistant.ui.load_a_path;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
@@ -39,11 +41,22 @@ import com.tnrlab.travelassistant.models.creaet_path.RoutePath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 
 public class LoadAPathFragment extends Fragment implements
         OnMapReadyCallback, PermissionsListener {
-
+    @BindView(R.id.tvType)
+    TextView tvType;
+    @BindView(R.id.btAcclerator)
+    Button btAcclerator;
+    private int selectedColorView = 0;
     private LoadAPathViewModel mViewModel;
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
@@ -54,10 +67,29 @@ public class LoadAPathFragment extends Fragment implements
         return new LoadAPathFragment();
     }
 
+
+    @OnClick(R.id.btAcclerator)
+    public void onClickAcclerate() {
+        if (selectedColorView == 0) {
+            selectedColorView = 1;
+            btAcclerator.setText("ACCELEROMETER");
+
+        } else if (selectedColorView == 1) {
+            selectedColorView = 0;
+            btAcclerator.setText("SPEED");
+        }
+
+        Toast.makeText(getContext(), "acc " + selectedColorView, Toast.LENGTH_SHORT).show();
+        onMapReady(mapboxMap);
+
+
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.load_a_path_fragment, container, false);
+        ButterKnife.bind(this, root);
 
         mapView = root.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -72,6 +104,7 @@ public class LoadAPathFragment extends Fragment implements
         Gson gson = new Gson();
         String routeData = getArguments().getString("route_path");
 
+        btAcclerator.setText("SPEED");
         if (routeData != null) {
             routeDetails = gson.fromJson(routeData, RouteDetails.class);
             Toast.makeText(getContext(), String.valueOf(routeDetails.getRouteReview().getRoutePathID()), Toast.LENGTH_SHORT).show();
@@ -95,39 +128,139 @@ public class LoadAPathFragment extends Fragment implements
 
     }
 
+    private Feature[] getFeaturesFromDataList(List<RoutePath> routePathList) {
+
+        Feature[] mFeatures = new Feature[routePathList.size()];
+
+
+        for (int iK = 0; iK < routePathList.size(); iK++) {
+
+            List<Point> myRouteCoordinates = new ArrayList<>();
+
+            int max = iK + 1;
+
+            for (int i = iK; i < routePathList.size(); i++) {
+
+                RoutePath routePath = routePathList.get(i);
+                myRouteCoordinates.add(Point.fromLngLat(routePath.getLongitude(), routePath.getLatitude()));
+                if (i == max) {
+                    break;
+                }
+            }
+
+
+            mFeatures[iK] = Feature.fromGeometry(LineString.fromLngLats(myRouteCoordinates));
+            int finalSpeed = (int) routePathList.get(iK).getSpeed();
+            mFeatures[iK].addNumberProperty("speed", finalSpeed);
+
+            int finalAccelerometer = (int) routePathList.get(iK).getSensorData().getAccelerometer().getTotalAcceleration();
+            mFeatures[iK].addNumberProperty("accelerometer", finalAccelerometer);
+
+
+        }
+        return mFeatures;
+
+
+    }
+
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         LoadAPathFragment.this.mapboxMap = mapboxMap;
         mapboxMap.getUiSettings().setZoomGesturesEnabled(true);
         mapboxMap.getUiSettings().setScrollGesturesEnabled(true);
         mapboxMap.getUiSettings().setAllGesturesEnabled(true);
-        mapboxMap.setMinZoomPreference(13);
         mapboxMap.setStyle(Style.OUTDOORS,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
 
-                        Random rnd = new Random();
-                        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-
                         setCamerpostion(routeDetails.getRoutePathList().get(0).getLatitude(), routeDetails.getRoutePathList().get(0).getLongitude());
 
-                        style.addSource(new GeoJsonSource("line-source",
-                                FeatureCollection.fromFeatures(new Feature[]{Feature.fromGeometry(
-                                        LineString.fromLngLats(getRouteCoordinatesFromDataList(routeDetails.getRoutePathList()))
-                                )})));
-                        style.addLayer(new LineLayer("linelayer", "line-source").withProperties(
-                                PropertyFactory.lineDasharray(new Float[]{0.01f, 2f}),
-                                PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-                                PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-                                PropertyFactory.lineWidth(5f),
-                                PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
+                        Feature[] mFeatures = getFeaturesFromDataList(routeDetails.getRoutePathList());
+
+                        FeatureCollection featureCollection = FeatureCollection.fromFeatures(mFeatures);
+
+                        style.addSource(new GeoJsonSource("line-source", featureCollection
                         ));
+
+                        if (selectedColorView == 0) {
+                            tvType.setText("speed");
+                            style.addLayer(new LineLayer("linelayer", "line-source").withProperties(
+                                    PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                                    PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                                    PropertyFactory.lineWidth(14f),
+                                    PropertyFactory.lineColor(
+                                            match(get("speed"), Expression.rgb(41, 0, 0),
+                                                    stop(0, Expression.rgb(255, 237, 237)),
+                                                    stop(1, Expression.rgb(255, 217, 217)),
+                                                    stop(2, Expression.rgb(255, 198, 198)),
+                                                    stop(3, Expression.rgb(255, 178, 178)),
+                                                    stop(4, Expression.rgb(255, 159, 159)),
+                                                    stop(5, Expression.rgb(255, 139, 139)),
+                                                    stop(6, Expression.rgb(255, 119, 119)),
+                                                    stop(7, Expression.rgb(255, 100, 100)),
+                                                    stop(8, Expression.rgb(255, 80, 80)),
+                                                    stop(9, Expression.rgb(255, 61, 61)),
+                                                    stop(10, Expression.rgb(255, 41, 41)),
+                                                    stop(11, Expression.rgb(255, 21, 21)),
+                                                    stop(12, Expression.rgb(255, 2, 2)),
+                                                    stop(13, Expression.rgb(237, 0, 0)),
+                                                    stop(14, Expression.rgb(217, 0, 0)),
+                                                    stop(15, Expression.rgb(198, 0, 0)),
+                                                    stop(16, Expression.rgb(178, 0, 0)),
+                                                    stop(17, Expression.rgb(159, 0, 0)),
+                                                    stop(18, Expression.rgb(139, 0, 0)),
+                                                    stop(19, Expression.rgb(119, 0, 0)),
+                                                    stop(20, Expression.rgb(100, 0, 0)),
+                                                    stop(21, Expression.rgb(80, 0, 0)),
+                                                    stop(22, Expression.rgb(61, 0, 0))
+                                            )
+                                    )
+                                    )
+                            );
+
+                        } else if (selectedColorView == 1) {
+                            tvType.setText("Accelerometer");
+                            style.addLayer(new LineLayer("linelayer", "line-source").withProperties(
+                                    PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                                    PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                                    PropertyFactory.lineWidth(14f),
+                                    PropertyFactory.lineColor(
+                                            match(get("accelerometer"), Expression.rgb(41, 0, 0),
+                                                    stop(0, Expression.rgb(255, 237, 237)),
+                                                    stop(1, Expression.rgb(255, 217, 217)),
+                                                    stop(2, Expression.rgb(255, 198, 198)),
+                                                    stop(3, Expression.rgb(255, 178, 178)),
+                                                    stop(4, Expression.rgb(255, 159, 159)),
+                                                    stop(5, Expression.rgb(255, 139, 139)),
+                                                    stop(6, Expression.rgb(255, 119, 119)),
+                                                    stop(7, Expression.rgb(255, 100, 100)),
+                                                    stop(8, Expression.rgb(255, 80, 80)),
+                                                    stop(9, Expression.rgb(255, 61, 61)),
+                                                    stop(10, Expression.rgb(255, 41, 41)),
+                                                    stop(11, Expression.rgb(255, 21, 21)),
+                                                    stop(12, Expression.rgb(255, 2, 2)),
+                                                    stop(13, Expression.rgb(237, 0, 0)),
+                                                    stop(14, Expression.rgb(217, 0, 0)),
+                                                    stop(15, Expression.rgb(198, 0, 0)),
+                                                    stop(16, Expression.rgb(178, 0, 0)),
+                                                    stop(17, Expression.rgb(159, 0, 0)),
+                                                    stop(18, Expression.rgb(139, 0, 0)),
+                                                    stop(19, Expression.rgb(119, 0, 0)),
+                                                    stop(20, Expression.rgb(100, 0, 0)),
+                                                    stop(21, Expression.rgb(80, 0, 0)),
+                                                    stop(22, Expression.rgb(61, 0, 0))
+                                            )
+                                    )
+                                    )
+                            );
+                        }
                     }
                 });
 
     }
+
 
     void setCamerpostion(double latitude, double longtitude) {
         mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longtitude), 13.0));

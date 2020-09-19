@@ -18,6 +18,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.tnrlab.travelassistant.R;
 import com.tnrlab.travelassistant.institution.login.LoginActivity;
@@ -118,6 +119,7 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                         FeatureCollection featureCollection = FeatureCollection.fromJson(mapDataModels.get(pMap).getMapData());
                         style.addSource(new GeoJsonSource("map-source" + pMap, featureCollection));
 
+
                         FillLayer fillLayer = new FillLayer("map-layer" + pMap,
                                 "map-source" + pMap);
                         fillLayer.setProperties(
@@ -132,7 +134,18 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                                 textRadialOffset(0.5f)
                         );
 
-                        style.addLayerBelow(fillLayer, "water");
+
+                        style.addLayer(new SymbolLayer("map-layer" + pMap, "map-source" + pMap)
+                                .withProperties(
+                                        textField(get("description")),
+                                        textSize(100f),
+                                        textColor(Color.RED),
+                                        textVariableAnchor(
+                                                new String[]{TEXT_ANCHOR_TOP, TEXT_ANCHOR_BOTTOM, TEXT_ANCHOR_LEFT, TEXT_ANCHOR_RIGHT}),
+                                        textJustify(TEXT_JUSTIFY_AUTO),
+                                        textRadialOffset(0.5f)));
+
+//                        style.addLayerBelow(fillLayer, "water");
 
 
                     }
