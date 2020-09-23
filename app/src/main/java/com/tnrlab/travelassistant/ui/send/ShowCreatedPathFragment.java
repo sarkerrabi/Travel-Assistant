@@ -49,11 +49,11 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
                 for (DataSnapshot mDataSnapshot : dataSnapshot.getChildren()) {
 
                     RouteDetails routeDetails = mDataSnapshot.getValue(RouteDetails.class);
-/*                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
+                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
                         routeDetailsList.add(routeDetails);
-                    }*/
+                    }
 
-                    routeDetailsList.add(routeDetails);
+//                    routeDetailsList.add(routeDetails);
 
 
                 }
