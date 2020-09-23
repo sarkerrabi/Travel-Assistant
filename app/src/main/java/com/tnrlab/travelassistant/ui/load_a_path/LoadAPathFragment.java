@@ -1,5 +1,7 @@
 package com.tnrlab.travelassistant.ui.load_a_path;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
@@ -45,13 +55,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
 
+import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 
 public class LoadAPathFragment extends Fragment implements
-        OnMapReadyCallback, PermissionsListener {
+        OnMapReadyCallback, PermissionsListener, LocationEngineCallback<LocationEngineResult> {
     @BindView(R.id.tvType)
     TextView tvType;
     @BindView(R.id.btAcclerator)
@@ -62,11 +77,18 @@ public class LoadAPathFragment extends Fragment implements
     private MapboxMap mapboxMap;
     private MapView mapView;
     private RouteDetails routeDetails;
+    Bundle bundle;
+    private DirectionsRoute currentRoute;
+    private MapboxDirections client;
+    private Point origin;
+    private Point destination;
+    private LocationComponent locationComponent;
 
     public static LoadAPathFragment newInstance() {
         return new LoadAPathFragment();
     }
 
+    private LocationEngineResult result;
 
     @OnClick(R.id.btAcclerator)
     public void onClickAcclerate() {
@@ -81,8 +103,13 @@ public class LoadAPathFragment extends Fragment implements
 
         Toast.makeText(getContext(), "acc " + selectedColorView, Toast.LENGTH_SHORT).show();
         onMapReady(mapboxMap);
+    }
+
+    @OnClick(R.id.btFollow)
+    public void onViewClicked() {
 
 
+        Navigation.findNavController(getView()).navigate(R.id.action_loadAPathFragment_to_followAPathFragment2, bundle);
     }
 
     @Override
@@ -101,8 +128,10 @@ public class LoadAPathFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LoadAPathViewModel.class);
+        bundle = new Bundle();
         Gson gson = new Gson();
         String routeData = getArguments().getString("route_path");
+        bundle.putString("route_path", routeData);
 
         btAcclerator.setText("SPEED");
         if (routeData != null) {
@@ -256,9 +285,68 @@ public class LoadAPathFragment extends Fragment implements
                                     )
                             );
                         }
+
                     }
                 });
 
+    }
+
+    private void getRoute(MapboxMap mapboxMap, Point origin, Point destination) {
+        client = MapboxDirections.builder()
+                .origin(origin)
+                .destination(destination)
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
+                .profile(DirectionsCriteria.PROFILE_DRIVING)
+                .accessToken(getString(R.string.mapbox_key))
+                .build();
+
+        client.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+// You can get the generic HTTP info about the response
+                Timber.d("Response code: " + response.code());
+                if (response.body() == null) {
+                    Timber.e("No routes found, make sure you set the right user and access token.");
+                    return;
+                } else if (response.body().routes().size() < 1) {
+                    Timber.e("No routes found");
+                    return;
+                }
+
+// Get the directions route
+                currentRoute = response.body().routes().get(0);
+
+// Make a toast which displays the route's distance
+                Toast.makeText(getContext(), String.format(
+                        "the route's distance: ",
+                        currentRoute.distance()), Toast.LENGTH_SHORT).show();
+
+                if (mapboxMap != null) {
+                    mapboxMap.getStyle(new Style.OnStyleLoaded() {
+                        @Override
+                        public void onStyleLoaded(@NonNull Style style) {
+
+
+                            GeoJsonSource source = style.getSourceAs("line-source");
+
+
+                            if (source != null) {
+                                source.setGeoJson(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6));
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                Timber.e("Error: " + throwable.getMessage());
+                Toast.makeText(getContext(), "Error: " + throwable.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        setCamerpostion(origin.latitude(), origin.longitude());
     }
 
 
@@ -266,13 +354,14 @@ public class LoadAPathFragment extends Fragment implements
         mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longtitude), 13.0));
     }
 
-    @SuppressWarnings({"MissingPermission"})
+
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
 
             // Get an instance of the component
-            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent = mapboxMap.getLocationComponent();
+
 
             // Activate with options
             locationComponent.activateLocationComponent(
@@ -281,6 +370,16 @@ public class LoadAPathFragment extends Fragment implements
                             .build());
 
             // Enable to make component visible
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             locationComponent.setLocationComponentEnabled(true);
 
 
@@ -290,6 +389,11 @@ public class LoadAPathFragment extends Fragment implements
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.GPS);
+
+
+/*
+            locationComponent.getLocationEngine().getLastLocation(this);
+*/
 
 
         } else {
@@ -365,5 +469,29 @@ public class LoadAPathFragment extends Fragment implements
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+
+    @Override
+    public void onSuccess(LocationEngineResult result) {
+        this.result = result;
+        destination = Point.fromLngLat(routeDetails.getRoutePathList().get(routeDetails.getRoutePathList().size() - 1).getLongitude(),
+                routeDetails.getRoutePathList().get(routeDetails.getRoutePathList().size() - 1).getLatitude());
+
+        // Set the destination location to the Plaza del Triunfo in Granada, Spain.
+//                        destination = Point.fromLngLat(91.4417521, 22.9620913);
+//                        origin = Point.fromLngLat(90.4168041, 23.7953182);
+
+        origin = Point.fromLngLat(result.getLastLocation().getLongitude(), result.getLastLocation().getLatitude());
+
+        // Get the directions route from the Mapbox Directions API
+        getRoute(mapboxMap, origin, destination);
+
+    }
+
+    @Override
+    public void onFailure(@NonNull Exception exception) {
+        exception.printStackTrace();
+
     }
 }

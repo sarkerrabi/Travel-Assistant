@@ -53,6 +53,15 @@
         android:id="@+id/loadAPathFragment"
         android:name="com.tnrlab.travelassistant.ui.load_a_path.LoadAPathFragment"
         android:label="Path Details"
-        tools:layout="@layout/load_a_path_fragment" />
+        tools:layout="@layout/load_a_path_fragment">
+        <action
+            android:id="@+id/action_loadAPathFragment_to_followAPathFragment2"
+            app:destination="@id/followAPathFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/followAPathFragment2"
+        android:name="com.tnrlab.travelassistant.ui.follow_a_path.FollowAPathFragment"
+        android:label="follow_a_path_fragment"
+        tools:layout="@layout/follow_a_path_fragment" />
 
 </navigation>
