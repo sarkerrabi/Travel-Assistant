@@ -1,6 +1,8 @@
 package com.tnrlab.travelassistant.ui.send.adapters;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,10 @@ public class ShowPathsAdapteriewHolder extends RecyclerView.ViewHolder {
     TextView tvDesc;
     @BindView(R.id.tvDate)
     TextView tvDate;
+    @BindView(R.id.linLay)
+    LinearLayout linLay;
+    @BindView(R.id.ivDelete)
+    ImageView ivDelete;
 
     public ShowPathsAdapteriewHolder(@NonNull View itemView) {
         super(itemView);

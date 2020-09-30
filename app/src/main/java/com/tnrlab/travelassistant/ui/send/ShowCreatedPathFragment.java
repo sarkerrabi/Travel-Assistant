@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.tnrlab.travelassistant.R;
+import com.tnrlab.travelassistant.loader.Loader;
 import com.tnrlab.travelassistant.models.creaet_path.RouteDetails;
 import com.tnrlab.travelassistant.ui.send.adapters.ShowPathsAdapter;
 
@@ -34,6 +35,7 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
     List<RouteDetails> routeDetailsList;
     FirebaseAuth mAuth;
     private ShowCreatedPathViewModel showCreatedPathViewModel;
+    Loader loader;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
         View root = inflater.inflate(R.layout.fragment_show_created_path, container, false);
         ButterKnife.bind(this, root);
         mAuth = FirebaseAuth.getInstance();
+        loader = new Loader(getActivity());
+
+        loader.showDialog();
 
         showCreatedPathViewModel.getAllMyRoutePaths(this).observe(this, new Observer<DataSnapshot>() {
             @Override
@@ -52,6 +57,10 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
 /*                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
                         routeDetailsList.add(routeDetails);
                     }*/
+
+                    assert routeDetails != null;
+                    routeDetails.setFireDBRouteKey(mDataSnapshot.getKey());
+
 
                     routeDetailsList.add(routeDetails);
 
@@ -66,6 +75,7 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
         });
 
 
+        loader.hideDialog();
         return root;
     }
 
@@ -94,5 +104,20 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
         Navigation.findNavController(getView()).navigate(R.id.action_nav_created_path_history_to_loadAPathFragment, bundle);
 
 
+    }
+
+    @Override
+    public void onPathDeleteClicked(RouteDetails routeDetails) {
+
+        showCreatedPathViewModel.removePathFromDB(routeDetails, this);
+        loader.showDialog();
+
+
+    }
+
+    @Override
+    public void onPathDeletedSuccessfully() {
+        loader.hideDialog();
+        Toast.makeText(getContext(), "Deleted Successfully", Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,6 +1,7 @@
 package com.tnrlab.travelassistant.ui.send;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tnrlab.travelassistant.models.creaet_path.RouteDetails;
 
 public class ShowCreatedPathViewModel extends ViewModel {
 
@@ -40,5 +42,15 @@ public class ShowCreatedPathViewModel extends ViewModel {
         });
 
         return snapshotMutableLiveData;
+    }
+
+    public void removePathFromDB(RouteDetails routeDetails, ShowPathsView showPathsView) {
+        mDatabase.child("route_paths").child(routeDetails.getFireDBRouteKey()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                showPathsView.onPathDeletedSuccessfully();
+            }
+        });
+
     }
 }

@@ -40,8 +40,16 @@ public class ShowPathsAdapter extends RecyclerView.Adapter<ShowPathsAdapteriewHo
             holder.tvDate.setText(routeDetailsList.get(position).getRoutePathList().get(0).getTimeDetails());
         }
 
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPathsView.onPathDeleteClicked(routeDetailsList.get(position));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            }
+        });
+
+
+        holder.linLay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPathsView.onShowCreatedPathClicked(routeDetailsList.get(position));

@@ -6,4 +6,8 @@ public interface ShowPathsView {
     void onFailed(String message);
 
     void onShowCreatedPathClicked(RouteDetails routeDetails);
+
+    void onPathDeleteClicked(RouteDetails routeDetails);
+
+    void onPathDeletedSuccessfully();
 }

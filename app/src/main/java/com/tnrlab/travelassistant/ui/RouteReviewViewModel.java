@@ -54,13 +54,17 @@ public class RouteReviewViewModel extends ViewModel {
 
         for (RouteDetails routeDetails :
                 routeDetailsList) {
+
+
             newRef.setValue(routeDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
-                        mDB.routePathDao().deleteRouteReviewListById(routeDetails.getRoutePathIDList());
-                        mDB.routeReviewDao().deleteRouteReview(routeDetails.getRouteReview());
+                        if (routeDetails != null) {
+                            mDB.routePathDao().deleteRouteReviewListById(routeDetails.getRoutePathIDList());
+                            mDB.routeReviewDao().deleteRouteReview(routeDetails.getRouteReview());
+                        }
 
                     }
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteDetails {
+
+    String fireDBRouteKey = "na";
     RouteReview routeReview;
     List<RoutePath> routePathList;
 
@@ -28,11 +30,22 @@ public class RouteDetails {
         this.routePathList = routePathList;
     }
 
+    public String getFireDBRouteKey() {
+        return fireDBRouteKey;
+    }
+
+    public void setFireDBRouteKey(String fireDBRouteKey) {
+        this.fireDBRouteKey = fireDBRouteKey;
+    }
+
     @Exclude
     public List<Integer> getRoutePathIDList() {
         List<Integer> ids = new ArrayList<>();
-        for (RoutePath routePath : routePathList) {
-            ids.add(routePath.getId());
+        if (routePathList != null) {
+            for (RoutePath routePath : routePathList) {
+                ids.add(routePath.getId());
+            }
+
         }
         return ids;
     }

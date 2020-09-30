@@ -485,6 +485,12 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
                         // No result for your request were found.
                         Log.d(TAG, "onResponse: No result found");
+                        if (saveState == 0) {
+                            sharedDB.saveStartPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+                        } else if (saveState == 1) {
+                            sharedDB.saveEndPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+                        }
+
 
                     }
                 }
@@ -493,6 +499,15 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
             @Override
             public void onFailure(Call<GeocodingResponse> call, Throwable t) {
+                if (saveState == 0) {
+
+                    sharedDB.saveStartPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+
+
+                } else if (saveState == 1) {
+                    sharedDB.saveEndPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+
+                }
 
             }
         });
