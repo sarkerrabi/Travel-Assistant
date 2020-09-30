@@ -407,11 +407,12 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
             if (sharedDB.getStartPlaceInfo() == null && !isCalled) {
                 sharedDB.saveRouteID(Common.getUniqueRoutePathID());
+
                 savePlaceInfo(mCurrentLocation, 0);
                 isCalled = true;
+            } else {
+                savePlaceInfo(mCurrentLocation, 1);
             }
-
-            savePlaceInfo(mCurrentLocation, 1);
 
 
             String timestamp = tsLong.toString();
@@ -469,10 +470,12 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                         Point firstResultPoint = results.get(0).center();
                         if (saveState == 0) {
 
+                            sharedDB.saveStartPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
                             sharedDB.saveStartPlaceInfo(response.body().features().get(0).placeName());
 
 
                         } else if (saveState == 1) {
+                            sharedDB.saveEndPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
                             sharedDB.saveEndPlaceInfo(response.body().features().get(0).placeName());
 
                         }
