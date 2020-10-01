@@ -10,4 +10,8 @@ public interface ShowPathsView {
     void onPathDeleteClicked(RouteDetails routeDetails);
 
     void onPathDeletedSuccessfully();
+
+    void onShareChanged(RouteDetails details, boolean isChecked);
+
+    void onPathSharedSuccessfully(boolean isShared);
 }

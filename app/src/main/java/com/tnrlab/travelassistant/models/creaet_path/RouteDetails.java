@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteDetails {
-
+    @Exclude
     String fireDBRouteKey = "na";
+
     RouteReview routeReview;
     List<RoutePath> routePathList;
+
+    @Exclude
+    boolean isShared = false;
 
     public RouteDetails() {
     }
@@ -30,12 +34,23 @@ public class RouteDetails {
         this.routePathList = routePathList;
     }
 
+    @Exclude
     public String getFireDBRouteKey() {
         return fireDBRouteKey;
     }
 
+    @Exclude
     public void setFireDBRouteKey(String fireDBRouteKey) {
         this.fireDBRouteKey = fireDBRouteKey;
+    }
+
+    public boolean getIsShared() {
+        return isShared;
+    }
+
+
+    public void setIsShared(boolean isShared) {
+        this.isShared = isShared;
     }
 
     @Exclude

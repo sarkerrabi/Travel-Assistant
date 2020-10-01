@@ -42,6 +42,7 @@ public class RouteReviewViewModel extends ViewModel {
         for (RouteReview routeReview : routeReviewList) {
             RouteDetails routeDetails = new RouteDetails();
             routeDetails.setRouteReview(routeReview);
+            routeDetails.setIsShared(false);
 
             List<RoutePath> routePathList = mDB.routePathDao().loadRoutePathsByRouteID(routeReview.getRoutePathID());
 
@@ -55,7 +56,7 @@ public class RouteReviewViewModel extends ViewModel {
         for (RouteDetails routeDetails :
                 routeDetailsList) {
 
-
+            routeDetails.setIsShared(false);
             newRef.setValue(routeDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

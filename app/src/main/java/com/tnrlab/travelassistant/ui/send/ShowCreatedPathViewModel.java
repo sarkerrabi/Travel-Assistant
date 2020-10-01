@@ -6,6 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,5 +55,20 @@ public class ShowCreatedPathViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void shareWithOthers(RouteDetails details, boolean isChecked, ShowPathsView showPathsView) {
+        mDatabase.child("route_paths").child(details.getFireDBRouteKey()).child("isShared").setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                showPathsView.onPathSharedSuccessfully(isChecked);
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showPathsView.onFailed(e.getMessage());
+            }
+        });
     }
 }

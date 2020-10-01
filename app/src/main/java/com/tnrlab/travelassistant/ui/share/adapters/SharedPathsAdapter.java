@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.ui.send.adapters;
+package com.tnrlab.travelassistant.ui.share.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,24 +15,24 @@ import com.tnrlab.travelassistant.ui.send.ShowPathsView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowPathsAdapter extends RecyclerView.Adapter<ShowPathsAdapteriewHolder> {
+public class SharedPathsAdapter extends RecyclerView.Adapter<SharedPathsAdapteriewHolder> {
     List<RouteDetails> routeDetailsList = new ArrayList<>();
     ShowPathsView showPathsView;
 
-    public ShowPathsAdapter(List<RouteDetails> routeDetailsList, ShowPathsView showPathsView) {
+    public SharedPathsAdapter(List<RouteDetails> routeDetailsList, ShowPathsView showPathsView) {
         this.routeDetailsList = routeDetailsList;
         this.showPathsView = showPathsView;
     }
 
     @NonNull
     @Override
-    public ShowPathsAdapteriewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_find_path, parent, false);
-        return new ShowPathsAdapteriewHolder(view);
+    public SharedPathsAdapteriewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_shared_path, parent, false);
+        return new SharedPathsAdapteriewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ShowPathsAdapteriewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SharedPathsAdapteriewHolder holder, int position) {
         holder.tvRoutePathID.setText("Route Path ID: " + routeDetailsList.get(position).getRouteReview().getRoutePathID());
         holder.tvStartLocation.setText(routeDetailsList.get(position).getRouteReview().getStartPlaceInfo());
         holder.tvEndLocation.setText(routeDetailsList.get(position).getRouteReview().getEndPlaceInfo());

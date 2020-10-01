@@ -1,4 +1,4 @@
-package com.tnrlab.travelassistant.ui.send.adapters;
+package com.tnrlab.travelassistant.ui.share.adapters;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +14,7 @@ import com.tnrlab.travelassistant.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ShowPathsAdapteriewHolder extends RecyclerView.ViewHolder {
+public class SharedPathsAdapteriewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvRoutePathID)
     TextView tvRoutePathID;
     @BindView(R.id.tvStartLocation)
@@ -32,7 +32,7 @@ public class ShowPathsAdapteriewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.sw_share)
     Switch swShare;
 
-    public ShowPathsAdapteriewHolder(@NonNull View itemView) {
+    public SharedPathsAdapteriewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

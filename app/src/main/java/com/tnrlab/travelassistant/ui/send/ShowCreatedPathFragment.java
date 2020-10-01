@@ -34,8 +34,8 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
     RecyclerView rvCreatedPaths;
     List<RouteDetails> routeDetailsList;
     FirebaseAuth mAuth;
-    private ShowCreatedPathViewModel showCreatedPathViewModel;
     Loader loader;
+    private ShowCreatedPathViewModel showCreatedPathViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,20 +54,22 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
                 for (DataSnapshot mDataSnapshot : dataSnapshot.getChildren()) {
 
                     RouteDetails routeDetails = mDataSnapshot.getValue(RouteDetails.class);
-/*                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
-                        routeDetailsList.add(routeDetails);
-                    }*/
+
 
                     assert routeDetails != null;
                     routeDetails.setFireDBRouteKey(mDataSnapshot.getKey());
 
+
+/*                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
+                        routeDetailsList.add(routeDetails);
+                    }*/
 
                     routeDetailsList.add(routeDetails);
 
 
                 }
 
-                setDataOnRecylerView(routeDetailsList);
+                setDataOnRecyclerView(routeDetailsList);
 
 
             }
@@ -80,7 +82,7 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
     }
 
 
-    private void setDataOnRecylerView(List<RouteDetails> routeDetailsList) {
+    private void setDataOnRecyclerView(List<RouteDetails> routeDetailsList) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvCreatedPaths.setLayoutManager(linearLayoutManager);
         ShowPathsAdapter recycleViewAdapter = new ShowPathsAdapter(routeDetailsList, this);
@@ -91,6 +93,7 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
 
     @Override
     public void onFailed(String message) {
+        loader.hideDialog();
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
     }
@@ -119,5 +122,21 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
     public void onPathDeletedSuccessfully() {
         loader.hideDialog();
         Toast.makeText(getContext(), "Deleted Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShareChanged(RouteDetails details, boolean isChecked) {
+        loader.showDialog();
+        showCreatedPathViewModel.shareWithOthers(details, isChecked, this);
+    }
+
+    @Override
+    public void onPathSharedSuccessfully(boolean isShared) {
+        loader.hideDialog();
+        if (isShared) {
+            Toast.makeText(getContext(), "Now, Your path will be shared with others ", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Removed access to follow your path", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -25,6 +25,11 @@
             android:icon="@drawable/show_created_paths"
             android:title="Show Created Route Paths" />
 
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/shared_paths"
+            android:title="Shared Paths" />
+
 
         <item
             android:id="@+id/nav_logout"

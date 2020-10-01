@@ -15,7 +15,11 @@
         android:id="@+id/nav_share"
         android:name="com.tnrlab.travelassistant.ui.share.ShareFragment"
         android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_share">
+        <action
+            android:id="@+id/action_nav_share_to_loadAPathFragment"
+            app:destination="@id/loadAPathFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_created_path_history"
