@@ -52,10 +52,10 @@
             android:layout_marginEnd="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@color/colorAccent"
-            android:padding="@dimen/_15sdp"
+            android:padding="@dimen/_10sdp"
             android:text="Follow Path"
             android:textColor="#FFFFFF"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             mapbox:layout_constraintBottom_toBottomOf="parent"
             mapbox:layout_constraintEnd_toEndOf="parent"
             mapbox:layout_constraintStart_toStartOf="parent" />
