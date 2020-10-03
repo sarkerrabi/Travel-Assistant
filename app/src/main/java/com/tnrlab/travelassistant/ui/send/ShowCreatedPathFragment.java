@@ -1,5 +1,7 @@
 package com.tnrlab.travelassistant.ui.send;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,11 +62,11 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
                     routeDetails.setFireDBRouteKey(mDataSnapshot.getKey());
 
 
-/*                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
+                    if (routeDetails.getRouteReview().getUid().equals(mAuth.getCurrentUser().getUid())) {
                         routeDetailsList.add(routeDetails);
-                    }*/
+                    }
 
-                    routeDetailsList.add(routeDetails);
+//                    routeDetailsList.add(routeDetails);
 
 
                 }
@@ -110,10 +112,25 @@ public class ShowCreatedPathFragment extends Fragment implements ShowPathsView {
     }
 
     @Override
-    public void onPathDeleteClicked(RouteDetails routeDetails) {
+    public void onPathDeleteClicked(RouteDetails routeDetails, ShowPathsView showPathsView) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete alert")
+                .setMessage("Are you sure you want to delete this path?")
 
-        showCreatedPathViewModel.removePathFromDB(routeDetails, this);
-        loader.showDialog();
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showCreatedPathViewModel.removePathFromDB(routeDetails, showPathsView);
+                        loader.showDialog();
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
 
 
     }

@@ -7,7 +7,7 @@ public interface ShowPathsView {
 
     void onShowCreatedPathClicked(RouteDetails routeDetails);
 
-    void onPathDeleteClicked(RouteDetails routeDetails);
+    void onPathDeleteClicked(RouteDetails routeDetails, ShowPathsView showPathsView);
 
     void onPathDeletedSuccessfully();
 

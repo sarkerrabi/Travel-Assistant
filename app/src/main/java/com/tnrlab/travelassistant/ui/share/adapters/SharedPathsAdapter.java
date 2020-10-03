@@ -53,7 +53,7 @@ public class SharedPathsAdapter extends RecyclerView.Adapter<SharedPathsAdapteri
         holder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPathsView.onPathDeleteClicked(routeDetailsList.get(position));
+                showPathsView.onPathDeleteClicked(routeDetailsList.get(position), showPathsView);
             }
         });
 

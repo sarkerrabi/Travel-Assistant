@@ -101,9 +101,10 @@ public class ShareFragment extends Fragment implements ShowPathsView {
     }
 
     @Override
-    public void onPathDeleteClicked(RouteDetails routeDetails) {
+    public void onPathDeleteClicked(RouteDetails routeDetails, ShowPathsView showPathsView) {
 
     }
+
 
     @Override
     public void onPathDeletedSuccessfully() {
