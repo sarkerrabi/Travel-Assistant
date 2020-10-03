@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/nav_share"
         android:name="com.tnrlab.travelassistant.ui.share.ShareFragment"
-        android:label="@string/menu_share"
+        android:label="Shared Path"
         tools:layout="@layout/fragment_share">
         <action
             android:id="@+id/action_nav_share_to_loadAPathFragment"
@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/followAPathFragment2"
         android:name="com.tnrlab.travelassistant.ui.follow_a_path.FollowAPathFragment"
-        android:label="follow_a_path_fragment"
+        android:label="Follow Path"
         tools:layout="@layout/follow_a_path_fragment" />
 
 </navigation>

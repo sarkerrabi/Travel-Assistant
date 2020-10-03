@@ -1,7 +1,13 @@
 package com.tnrlab.travelassistant.ui.follow_a_path;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +17,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.gson.Gson;
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineProvider;
+import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -47,7 +58,9 @@ import com.tnrlab.travelassistant.R;
 import com.tnrlab.travelassistant.models.creaet_path.RouteDetails;
 import com.tnrlab.travelassistant.models.creaet_path.RoutePath;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,6 +68,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+import static android.content.ContentValues.TAG;
+import static android.os.Looper.getMainLooper;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
@@ -62,7 +77,13 @@ import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 
 public class FollowAPathFragment extends Fragment implements
         OnMapReadyCallback, PermissionsListener, LocationEngineCallback<LocationEngineResult> {
-
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 9000;
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    LocationEngine mLocationEngine;
+    private String CHANNEL_NAME = "FOLLOW_USER_DONE";
+    private String CHANNEL_ID = "10011";
+    private String CHANNEL_DESC = "NOTIFY_USER_DONE";
     private FollowAPathViewModel mViewModel;
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
@@ -75,6 +96,10 @@ public class FollowAPathFragment extends Fragment implements
     private Point destination;
     private Point origin;
     private LocationEngineResult result;
+    private LocationEngineRequest mLocationEngineRequest;
+    private LocationEngineCallback<LocationEngineResult> mLocationEngineCallback;
+    private Location mCurrentLocation;
+    private String mLastUpdateTime;
 
     public static FollowAPathFragment newInstance() {
         return new FollowAPathFragment();
@@ -99,10 +124,96 @@ public class FollowAPathFragment extends Fragment implements
             routeDetails = gson.fromJson(routeData, RouteDetails.class);
         }
 
+        mLocationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
+
+        createLocationRequest();
+        createLocationCallback();
 
         mapView = getView().findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+    }
+
+    private void createLocationRequest() {
+        mLocationEngineRequest = new LocationEngineRequest.Builder(UPDATE_INTERVAL_IN_MILLISECONDS)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
+                .build();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void createLocationCallback() {
+        mLocationEngineCallback = new LocationEngineCallback<LocationEngineResult>() {
+            @Override
+            public void onSuccess(LocationEngineResult result) {
+                mCurrentLocation = result.getLastLocation();
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                updateLocationUI();
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                exception.printStackTrace();
+
+            }
+        };
+
+        mLocationEngine.requestLocationUpdates(mLocationEngineRequest, mLocationEngineCallback, getMainLooper());
+
+    }
+
+    private void updateLocationUI() {
+        if (mCurrentLocation != null) {
+            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLatitude());
+            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLongitude());
+            Log.e(TAG, "updateLocationUI: " + mLastUpdateTime);
+            double distance = 0;
+            Point mCurrentPoint = Point.fromLngLat(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude());
+            Point destinationEnd = Point.fromLngLat(routeDetails.getRoutePathList().get(routeDetails.getRoutePathList().size() - 1).getLongitude(),
+                    routeDetails.getRoutePathList().get(routeDetails.getRoutePathList().size() - 1).getLatitude());
+
+            distance = TurfMeasurement.distance(mCurrentPoint, destinationEnd);
+
+
+            if (distance < 1) {
+                Toast.makeText(getContext(), "Your have reached your following destination", Toast.LENGTH_SHORT).show();
+                notifyUser("Following Done", "Your have reached your following destination, " + routeDetails.getRouteReview().getEndPlaceInfo());
+
+                if (mLocationEngine != null) {
+                    mLocationEngine.removeLocationUpdates(mLocationEngineCallback);
+                }
+            }
+
+
+        }
+
+    }
+
+    private void notifyUser(String title, String desc) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(CHANNEL_DESC);
+            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+// to make notification details
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle(title)
+                .setContentText(desc)
+                .setSound(uri)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getContext());
+
+//to notify the notification
+        managerCompat.notify(1, builder.build());
 
     }
 
@@ -319,6 +430,9 @@ public class FollowAPathFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
+        if (mLocationEngine != null) {
+            mLocationEngine.removeLocationUpdates(mLocationEngineCallback);
+        }
         mapView.onStop();
     }
 
@@ -331,6 +445,9 @@ public class FollowAPathFragment extends Fragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mLocationEngine != null) {
+            mLocationEngine.removeLocationUpdates(mLocationEngineCallback);
+        }
         mapView.onDestroy();
     }
 
