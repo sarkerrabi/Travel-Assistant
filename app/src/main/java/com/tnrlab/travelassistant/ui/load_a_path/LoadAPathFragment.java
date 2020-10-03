@@ -45,6 +45,7 @@ import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.turf.TurfMeasurement;
 import com.tnrlab.travelassistant.R;
 import com.tnrlab.travelassistant.models.creaet_path.RouteDetails;
 import com.tnrlab.travelassistant.models.creaet_path.RoutePath;
@@ -316,17 +317,16 @@ public class LoadAPathFragment extends Fragment implements
 // Get the directions route
                 currentRoute = response.body().routes().get(0);
 
+                double distance = TurfMeasurement.distance(origin, destination);
+
 // Make a toast which displays the route's distance
                 Toast.makeText(getContext(), String.format(
-                        "the route's distance: ",
-                        currentRoute.distance()), Toast.LENGTH_SHORT).show();
+                        "the route's distance: ", distance), Toast.LENGTH_SHORT).show();
 
                 if (mapboxMap != null) {
                     mapboxMap.getStyle(new Style.OnStyleLoaded() {
                         @Override
                         public void onStyleLoaded(@NonNull Style style) {
-
-
                             GeoJsonSource source = style.getSourceAs("line-source");
 
 
@@ -483,6 +483,7 @@ public class LoadAPathFragment extends Fragment implements
 //                        origin = Point.fromLngLat(90.4168041, 23.7953182);
 
         origin = Point.fromLngLat(result.getLastLocation().getLongitude(), result.getLastLocation().getLatitude());
+
 
         // Get the directions route from the Mapbox Directions API
         getRoute(mapboxMap, origin, destination);

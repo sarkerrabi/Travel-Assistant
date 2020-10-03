@@ -1,6 +1,7 @@
 package com.tnrlab.travelassistant.ui.create_path;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -36,6 +37,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.mapbox.android.core.location.LocationEngine;
+import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineProvider;
+import com.mapbox.android.core.location.LocationEngineRequest;
+import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
@@ -75,6 +81,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static android.os.Looper.getMainLooper;
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 import static com.tnrlab.travelassistant.common.Common.getCurrentTimeAndDate;
 
@@ -108,6 +115,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     private Location mCurrentLocation;
     private String mLastUpdateTime;
     private SharedDB sharedDB;
+    LocationEngine mLocationEngine;
+    private LocationEngineRequest mLocationEngineRequest;
+    private LocationEngineCallback<LocationEngineResult> mLocationEngineCallback;
 
     public static CreatePathFragment newInstance() {
         return new CreatePathFragment();
@@ -126,6 +136,8 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mRequestingLocationUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
+        mLocationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
+
 
         createLocationCallback();
         createLocationRequest();
@@ -278,6 +290,13 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mLocationEngineRequest = new LocationEngineRequest.Builder(UPDATE_INTERVAL_IN_MILLISECONDS)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
+                .build();
+
+
     }
 
     private void stopLocationUpdates() {
@@ -294,6 +313,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                         setButtonsEnabledState();
                     }
                 });
+        if (mLocationEngine != null) {
+            mLocationEngine.removeLocationUpdates(mLocationEngineCallback);
+        }
 
     }
 
@@ -312,6 +334,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                         }
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
+
+                        mLocationEngine.requestLocationUpdates(mLocationEngineRequest, mLocationEngineCallback, getMainLooper());
+
 
                         updateUI();
                     }
@@ -335,6 +360,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                                 String errorMessage = "Location settings are inadequate, and cannot be " +
                                         "fixed here. Fix in Settings.";
                                 mRequestingLocationUpdates = false;
+                                break;
                         }
 
                         updateUI();
@@ -346,6 +372,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();
+
     }
 
     private void updateUI() {
@@ -365,7 +392,27 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void createLocationCallback() {
+
+        mLocationEngineCallback = new LocationEngineCallback<LocationEngineResult>() {
+            @Override
+            public void onSuccess(LocationEngineResult result) {
+                mCurrentLocation = result.getLastLocation();
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                updateLocationUI();
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                exception.printStackTrace();
+
+            }
+        };
+
+
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -374,6 +421,8 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                 updateLocationUI();
+
+
             }
         };
 
@@ -408,11 +457,15 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
             if (sharedDB.getStartPlaceInfo() == null && !isCalled) {
                 sharedDB.saveRouteID(Common.getUniqueRoutePathID());
 
+                sharedDB.saveStartPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+
                 savePlaceInfo(mCurrentLocation, 0);
                 isCalled = true;
             } else {
                 savePlaceInfo(mCurrentLocation, 1);
             }
+
+            sharedDB.saveEndPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
 
 
             String timestamp = tsLong.toString();
@@ -564,7 +617,11 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onStop() {
         super.onStop();
+        if (mLocationEngine != null) {
+            mLocationEngine.removeLocationUpdates(mLocationEngineCallback);
+        }
         mapView.onStop();
+
     }
 
     @Override

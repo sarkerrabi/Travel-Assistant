@@ -3,6 +3,7 @@ package com.tnrlab.travelassistant.ui.follow_a_path;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -220,9 +221,8 @@ public class FollowAPathFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                Timber.e("Error: " + throwable.getMessage());
-                Toast.makeText(getContext(), "Error: " + throwable.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Log.e("FOLLOW_PATH", "Error: " + throwable.getMessage());
+
             }
         });
 
