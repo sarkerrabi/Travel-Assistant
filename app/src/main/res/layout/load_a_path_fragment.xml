@@ -46,10 +46,16 @@
 
         <Button
             android:id="@+id/btFollow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/_15sdp"
             android:text="Follow Path"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_14ssp"
             mapbox:layout_constraintBottom_toBottomOf="parent"
             mapbox:layout_constraintEnd_toEndOf="parent"
             mapbox:layout_constraintStart_toStartOf="parent" />

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -100,6 +102,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     @BindView(R.id.tvData)
     TextView tvData;
     boolean isCalled = false;
+    @BindView(R.id.ivCreating)
+    ImageView ivCreating;
+    LocationEngine mLocationEngine;
     private Boolean mRequestingLocationUpdates;
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -115,7 +120,6 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     private Location mCurrentLocation;
     private String mLastUpdateTime;
     private SharedDB sharedDB;
-    LocationEngine mLocationEngine;
     private LocationEngineRequest mLocationEngineRequest;
     private LocationEngineCallback<LocationEngineResult> mLocationEngineCallback;
 
@@ -138,6 +142,10 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
         mLocationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
 
+        Glide.with(this)
+                .load(R.drawable.dots)
+                .into(ivCreating);
+
 
         createLocationCallback();
         createLocationRequest();
@@ -151,6 +159,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
         if (mStartUpdatesButton.isEnabled()) {
             mStopUpdatesButton.setEnabled(false);
+            mStopUpdatesButton.setAlpha(.5f);
         }
 
 
@@ -385,10 +394,15 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     private void setButtonsEnabledState() {
         if (mRequestingLocationUpdates) {
             mStartUpdatesButton.setEnabled(false);
+            mStartUpdatesButton.setAlpha(.5f);
             mStopUpdatesButton.setEnabled(true);
+            mStopUpdatesButton.setAlpha(1f);
+
         } else {
             mStartUpdatesButton.setEnabled(true);
+            mStartUpdatesButton.setAlpha(1f);
             mStopUpdatesButton.setEnabled(false);
+            mStopUpdatesButton.setAlpha(.5f);
         }
     }
 
@@ -576,10 +590,12 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                     mRequestingLocationUpdates = true;
                     setButtonsEnabledState();
                     startLocationUpdates();
+                    ivCreating.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.stop_updates_button:
                 isCalled = false;
+                ivCreating.setVisibility(View.GONE);
 
                 stopLocationUpdates();
 /*
