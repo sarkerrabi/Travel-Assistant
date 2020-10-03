@@ -134,8 +134,9 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                                 textRadialOffset(0.5f)
                         );
 
+                        style.addLayerBelow(fillLayer, "water");
 
-                        style.addLayer(new SymbolLayer("map-layer" + pMap, "map-source" + pMap)
+                        style.addLayerAbove(new SymbolLayer("map-layer" + pMap + "txt", "map-source" + pMap + "txt")
                                 .withProperties(
                                         textField(get("description")),
                                         textSize(100f),
@@ -143,9 +144,7 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                                         textVariableAnchor(
                                                 new String[]{TEXT_ANCHOR_TOP, TEXT_ANCHOR_BOTTOM, TEXT_ANCHOR_LEFT, TEXT_ANCHOR_RIGHT}),
                                         textJustify(TEXT_JUSTIFY_AUTO),
-                                        textRadialOffset(0.5f)));
-
-//                        style.addLayerBelow(fillLayer, "water");
+                                        textRadialOffset(0.5f)), "road-number-shield");
 
 
                     }

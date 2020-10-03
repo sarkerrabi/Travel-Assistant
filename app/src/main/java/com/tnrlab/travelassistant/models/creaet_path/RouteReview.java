@@ -14,6 +14,7 @@ public class RouteReview {
     String endPlaceInfo;
     String description;
 
+
     String uid;
 
     @Ignore

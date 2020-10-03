@@ -51,7 +51,7 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             android:padding="@dimen/_15sdp"
             android:text="Follow Path"
             android:textColor="#FFFFFF"

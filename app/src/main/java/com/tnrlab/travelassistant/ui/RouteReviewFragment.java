@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,9 +26,9 @@ import butterknife.OnClick;
 public class RouteReviewFragment extends Fragment {
 
     @BindView(R.id.tvStartLocation)
-    TextView tvStartLocation;
+    EditText tvStartLocation;
     @BindView(R.id.tvEndLocation)
-    TextView tvEndLocation;
+    EditText tvEndLocation;
     @BindView(R.id.routeDesc)
     EditText routeDesc;
     SharedDB sharedDB;
@@ -69,6 +68,19 @@ public class RouteReviewFragment extends Fragment {
             routeDesc.setError("Please tell us something about your path*");
             return;
         }
+
+        if (tvStartLocation.getText().toString().isEmpty()) {
+            tvStartLocation.setError("Start location is required");
+            return;
+        }
+
+        if (tvEndLocation.getText().toString().isEmpty()) {
+            tvEndLocation.setError("End location is required");
+            return;
+        }
+        sharedDB.saveStartPlaceInfo(tvStartLocation.getText().toString());
+        sharedDB.saveEndPlaceInfo(tvEndLocation.getText().toString());
+
 
         RouteReview routeReview = new RouteReview();
         routeReview.setDescription(routeDesc.getText().toString());
