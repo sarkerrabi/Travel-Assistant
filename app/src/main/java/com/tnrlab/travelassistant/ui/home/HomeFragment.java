@@ -1,10 +1,14 @@
 package com.tnrlab.travelassistant.ui.home;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
@@ -52,6 +61,7 @@ public class HomeFragment extends Fragment implements
     private MapboxMap mapboxMap;
     private MapView mapView;
     private String geojsonSourceLayerId = "geojsonSourceLayerId";
+    private LocationManager mLocationManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,13 +71,52 @@ public class HomeFragment extends Fragment implements
         ButterKnife.bind(this, root);
 
         String user = null;
+        checkPermission();
+
+        mLocationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        checkGpsStatus();
 
 
         mapView = root.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+
         return root;
+    }
+
+    private void checkGpsStatus() {
+
+
+        assert mLocationManager != null;
+        boolean gpsStatus = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (gpsStatus) {
+            Toast.makeText(getContext(), "GPS Is Enabled", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "GPS Is Disabled", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
+
+    private void checkPermission() {
+        Dexter.withActivity(getActivity())
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                    Toast.makeText(getContext(), "Thank you", Toast.LENGTH_SHORT).show();
+                } else {
+                    checkPermission();
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+
+            }
+        }).check();
     }
 
     @Override

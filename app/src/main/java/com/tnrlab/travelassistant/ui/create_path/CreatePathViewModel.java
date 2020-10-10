@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.github.pwittchen.reactivesensors.library.ReactiveSensorEvent;
 import com.github.pwittchen.reactivesensors.library.ReactiveSensors;
+import com.github.pwittchen.reactivesensors.library.SensorNotFoundException;
 import com.tnrlab.travelassistant.models.creaet_path.Accelerometer;
-import com.tnrlab.travelassistant.models.creaet_path.DeviceOrientation;
 import com.tnrlab.travelassistant.models.creaet_path.GravityData;
 import com.tnrlab.travelassistant.models.creaet_path.LinearAcceleration;
 import com.tnrlab.travelassistant.models.creaet_path.SensorData;
@@ -18,6 +18,7 @@ import com.tnrlab.travelassistant.models.creaet_path.SensorData;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import timber.log.Timber;
 
 
 public class CreatePathViewModel extends ViewModel {
@@ -57,6 +58,13 @@ public class CreatePathViewModel extends ViewModel {
 
                                        // sensorEventLiveData.setValue(accelerometer);
 
+                                   }
+                               }, new Consumer<Throwable>() {
+                                   @Override
+                                   public void accept(Throwable throwable) throws Exception {
+                                       if (throwable instanceof SensorNotFoundException) {
+                                           Timber.e("Sorry, your device doesn't have required sensor.");
+                                       }
                                    }
                                }
 
@@ -104,12 +112,20 @@ public class CreatePathViewModel extends ViewModel {
 
 
                                    }
+                               }, new Consumer<Throwable>() {
+                                   @Override
+                                   public void accept(Throwable throwable) throws Exception {
+                                       if (throwable instanceof SensorNotFoundException) {
+                                           Timber.e("Sorry, your device doesn't have required sensor.");
+                                       }
+                                   }
                                }
 
                     );
         }
 
         GravityData gravityData = new GravityData();
+
         if (reactiveSensors.hasSensor(Sensor.TYPE_GRAVITY)) {
             reactiveSensors.observeSensor(Sensor.TYPE_GRAVITY)
                     .subscribeOn(Schedulers.computation())
@@ -131,6 +147,13 @@ public class CreatePathViewModel extends ViewModel {
                                        sensorDataMutableLiveData.setValue(sensorData);
 
 
+                                   }
+                               }, new Consumer<Throwable>() {
+                                   @Override
+                                   public void accept(Throwable throwable) throws Exception {
+                                       if (throwable instanceof SensorNotFoundException) {
+                                           Timber.e("Sorry, your device doesn't have required sensor.");
+                                       }
                                    }
                                }
 
@@ -161,12 +184,19 @@ public class CreatePathViewModel extends ViewModel {
 
 
                                    }
+                               }, new Consumer<Throwable>() {
+                                   @Override
+                                   public void accept(Throwable throwable) throws Exception {
+                                       if (throwable instanceof SensorNotFoundException) {
+                                           Timber.e("Sorry, your device doesn't have required sensor.");
+                                       }
+                                   }
                                }
 
                     );
         }
 
-        DeviceOrientation deviceOrientation = new DeviceOrientation();
+/*        DeviceOrientation deviceOrientation = new DeviceOrientation();
         if (reactiveSensors.hasSensor(Sensor.TYPE_ORIENTATION)) {
             reactiveSensors.observeSensor(Sensor.TYPE_ORIENTATION)
                     .subscribeOn(Schedulers.computation())
@@ -190,10 +220,16 @@ public class CreatePathViewModel extends ViewModel {
 
 
                                    }
+                               }, new Consumer<Throwable>() {
+                                   @Override public void accept(Throwable throwable) throws Exception {
+                                       if (throwable instanceof SensorNotFoundException) {
+                                           Timber.e("Sorry, your device doesn't have required sensor.");
+                                       }
+                                   }
                                }
 
                     );
-        }
+        }*/
 
         return sensorDataMutableLiveData;
     }
