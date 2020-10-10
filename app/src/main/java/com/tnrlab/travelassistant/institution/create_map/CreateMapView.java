@@ -8,4 +8,6 @@ public interface CreateMapView {
     void onCreateMapSaveSuccessful(String successMessage);
 
     void onCreateMapSaveFailed(String failMessage);
+
+    void onCreateBlockNameSet(String name);
 }

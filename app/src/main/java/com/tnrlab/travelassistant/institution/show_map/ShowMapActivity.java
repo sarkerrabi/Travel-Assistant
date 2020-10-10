@@ -126,7 +126,7 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                                 fillOpacity(.6f),
                                 fillColor(Color.parseColor("#00ab66")),
                                 textField(get("description")),
-                                textSize(17f),
+                                textSize(100f),
                                 textColor(Color.RED),
                                 textVariableAnchor(
                                         new String[]{TEXT_ANCHOR_TOP, TEXT_ANCHOR_BOTTOM, TEXT_ANCHOR_LEFT, TEXT_ANCHOR_RIGHT}),
@@ -134,20 +134,21 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                                 textRadialOffset(0.5f)
                         );
 
-                        style.addLayerBelow(fillLayer, "water");
+                        style.addLayerBelow(fillLayer, "road-number-shield");
 
-                        style.addLayerAbove(new SymbolLayer("map-layer" + pMap + "txt", "map-source" + pMap + "txt")
+                        style.addLayerAbove(new SymbolLayer("map-layer" + pMap + "txt", "map-source" + pMap)
                                 .withProperties(
                                         textField(get("description")),
-                                        textSize(100f),
+                                        textSize(15f),
                                         textColor(Color.RED),
                                         textVariableAnchor(
                                                 new String[]{TEXT_ANCHOR_TOP, TEXT_ANCHOR_BOTTOM, TEXT_ANCHOR_LEFT, TEXT_ANCHOR_RIGHT}),
                                         textJustify(TEXT_JUSTIFY_AUTO),
-                                        textRadialOffset(0.5f)), "road-number-shield");
+                                        textRadialOffset(0.9f)), "road-number-shield");
 
 
                     }
+
 
 
                 }
@@ -172,7 +173,7 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
 
                 CameraPosition position = new CameraPosition.Builder()
                         .target(new LatLng(new LatLng(latiLan.get(1), latiLan.get(0))))
-                        .zoom(17) // Sets the zoom
+                        .zoom(16) // Sets the zoom
                         .bearing(90) // Rotate the camera
                         .tilt(30) // Set the camera tilt
                         .build(); // Creates a CameraPosition from the builder

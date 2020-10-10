@@ -34,6 +34,7 @@ import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.tnrlab.travelassistant.R;
+import com.tnrlab.travelassistant.dialogs.MapNameEnterDialog;
 import com.tnrlab.travelassistant.loader.Loader;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
 
     private CreateMapPresenter createMapPresenter;
     private Loader loader;
+    private MapNameEnterDialog mapNameEnterDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +130,7 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
      * Set the button click listeners
      */
     private void initFloatingActionButtonClickListeners() {
-        Button clearBoundariesFab = (Button) findViewById(R.id.clear_button);
+        Button clearBoundariesFab = findViewById(R.id.clear_button);
         clearBoundariesFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +138,7 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        FloatingActionButton dropPinFab = (FloatingActionButton) findViewById(R.id.drop_pin_button);
+        FloatingActionButton dropPinFab = findViewById(R.id.drop_pin_button);
         dropPinFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,20 +189,20 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
                     fillLayerPointList.add(firstPointOfPolygon);
                 }
                 Log.e("CREATE_MAP_TAG", "-----------------fillLayerPointList---------------------------");
-                Log.e("CREATE_MAP_TAG", "fillLayerPointList: " + String.valueOf(fillLayerPointList));
+                Log.e("CREATE_MAP_TAG", "fillLayerPointList: " + fillLayerPointList);
                 listOfList = new ArrayList<>();
                 listOfList.add(fillLayerPointList);
                 List<Feature> finalFeatureList = new ArrayList<>();
                 finalFeatureList.add(Feature.fromGeometry(Polygon.fromLngLats(listOfList)));
                 Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
 
-                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + String.valueOf(finalFeatureList));
+                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + finalFeatureList);
 
                 FeatureCollection newFeatureCollection = FeatureCollection.fromFeatures(finalFeatureList);
                 Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
 
 
-                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + String.valueOf(newFeatureCollection));
+                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + newFeatureCollection);
 
 
                 if (fillSource != null) {
@@ -359,8 +361,10 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
     public void onViewClicked() {
 
         if (featureCollectionForSave != null) {
-            createMapPresenter.saveMapDataIntoDB(featureCollectionForSave);
-
+            mapNameEnterDialog = new MapNameEnterDialog(this, this);
+            mapNameEnterDialog.setCancelable(false);
+            mapNameEnterDialog.setCanceledOnTouchOutside(false);
+            mapNameEnterDialog.show();
         }
     }
 
@@ -421,6 +425,15 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onCreateMapSaveFailed(String failMessage) {
         Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onCreateBlockNameSet(String name) {
+
+        featureCollectionForSave.features().get(0).addStringProperty("description", name);
+        createMapPresenter.saveMapDataIntoDB(featureCollectionForSave);
+        mapNameEnterDialog.dismiss();
 
     }
 }
