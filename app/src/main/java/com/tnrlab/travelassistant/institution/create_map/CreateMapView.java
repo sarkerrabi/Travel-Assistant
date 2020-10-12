@@ -10,4 +10,5 @@ public interface CreateMapView {
     void onCreateMapSaveFailed(String failMessage);
 
     void onCreateBlockNameSet(String name);
+
 }

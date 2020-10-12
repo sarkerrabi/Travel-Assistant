@@ -67,5 +67,19 @@
         android:name="com.tnrlab.travelassistant.ui.follow_a_path.FollowAPathFragment"
         android:label="Follow Path"
         tools:layout="@layout/follow_a_path_fragment" />
+    <fragment
+        android:id="@+id/nav_created_maps"
+        android:name="com.tnrlab.travelassistant.ui.created_maps.CreatedMapsFragment"
+        android:label="Institute Area Maps"
+        tools:layout="@layout/created_maps_fragment">
+        <action
+            android:id="@+id/action_nav_created_maps_to_showMapUserFragment"
+            app:destination="@id/showMapUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showMapUserFragment"
+        android:name="com.tnrlab.travelassistant.ui.show_map_user.ShowMapUserFragment"
+        android:label="Show Map"
+        tools:layout="@layout/show_map_user_fragment" />
 
 </navigation>
