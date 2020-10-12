@@ -132,15 +132,10 @@ public class ShowMapUserFragment extends Fragment implements OnMapReadyCallback,
                                                 new String[]{TEXT_ANCHOR_TOP, TEXT_ANCHOR_BOTTOM, TEXT_ANCHOR_LEFT, TEXT_ANCHOR_RIGHT}),
                                         textJustify(TEXT_JUSTIFY_AUTO),
                                         textRadialOffset(0.9f)), "road-number-shield");
-
-
                     }
-
-
                 }
             });
         }
-
     }
 
     private int randomColor() {
