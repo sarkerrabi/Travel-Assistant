@@ -27,6 +27,7 @@ import com.tnrlab.travelassistant.models.institute.Institution;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,12 +120,14 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                         FeatureCollection featureCollection = FeatureCollection.fromJson(mapDataModels.get(pMap).getMapData());
                         style.addSource(new GeoJsonSource("map-source" + pMap, featureCollection));
 
+                        int randomColor = randomColor();
+                        String hexColor = String.format("#%06X", (0xFFFFFF & randomColor));
 
                         FillLayer fillLayer = new FillLayer("map-layer" + pMap,
                                 "map-source" + pMap);
                         fillLayer.setProperties(
                                 fillOpacity(.6f),
-                                fillColor(Color.parseColor("#00ab66")),
+                                fillColor(Color.parseColor(hexColor)),
                                 textField(get("description")),
                                 textSize(100f),
                                 textColor(Color.RED),
@@ -150,12 +153,22 @@ public class ShowMapActivity extends AppCompatActivity implements ShowMapView, O
                     }
 
 
-
                 }
             });
         }
 
     }
+
+
+    private int randomColor() {
+
+        Random rand = new Random();
+        int r = rand.nextInt(255);
+        int g = rand.nextInt(255);
+        int b = rand.nextInt(255);
+        return Color.rgb(r, g, b);
+    }
+
 
     @Override
     public void onMapDataListFailed(String message) {
