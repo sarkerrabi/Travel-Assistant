@@ -30,6 +30,7 @@ import com.tnrlab.travelassistant.models.institute.Institution;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,12 +104,14 @@ public class ShowMapUserFragment extends Fragment implements OnMapReadyCallback,
                         FeatureCollection featureCollection = FeatureCollection.fromJson(mapDataModels.get(pMap).getMapData());
                         style.addSource(new GeoJsonSource("map-source" + pMap, featureCollection));
 
+                        int randomColor = randomColor();
+                        String hexColor = String.format("#%06X", (0xFFFFFF & randomColor));
 
                         FillLayer fillLayer = new FillLayer("map-layer" + pMap,
                                 "map-source" + pMap);
                         fillLayer.setProperties(
                                 fillOpacity(.6f),
-                                fillColor(Color.parseColor("#00ab66")),
+                                fillColor(Color.parseColor(hexColor)),
                                 textField(get("description")),
                                 textSize(100f),
                                 textColor(Color.RED),
@@ -140,6 +143,15 @@ public class ShowMapUserFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
+    private int randomColor() {
+
+        Random rand = new Random();
+        int r = rand.nextInt(255);
+        int g = rand.nextInt(255);
+        int b = rand.nextInt(255);
+        return Color.rgb(r, g, b);
+    }
+
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -147,7 +159,7 @@ public class ShowMapUserFragment extends Fragment implements OnMapReadyCallback,
         this.mapboxMap = mapboxMap;
         CameraPosition position = new CameraPosition.Builder()
                 .target(new LatLng(new LatLng(latiLan.get(1), latiLan.get(0))))
-                .zoom(16) // Sets the zoom
+                .zoom(17) // Sets the zoom
                 .bearing(90) // Rotate the camera
                 .tilt(30) // Set the camera tilt
                 .build(); // Creates a CameraPosition from the builder
