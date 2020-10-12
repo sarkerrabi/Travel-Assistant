@@ -2,11 +2,15 @@ package com.tnrlab.travelassistant.ui.create_path;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +87,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
-import static android.os.Looper.getMainLooper;
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 import static com.tnrlab.travelassistant.common.Common.getCurrentTimeAndDate;
 
@@ -105,6 +108,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
     @BindView(R.id.ivCreating)
     ImageView ivCreating;
     LocationEngine mLocationEngine;
+    LocationManager mLocationManager;
     private Boolean mRequestingLocationUpdates;
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -141,6 +145,9 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
         mLocationEngine = LocationEngineProvider.getBestLocationEngine(getContext());
+        mLocationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        CheckGpsStatus();
+
 
         Glide.with(this)
                 .load(R.drawable.dots)
@@ -165,6 +172,21 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
         return root;
     }
+
+    private void CheckGpsStatus() {
+
+
+        assert mLocationManager != null;
+        boolean gpsStatus = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (gpsStatus) {
+            Toast.makeText(getContext(), "GPS Is Enabled", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "GPS Is Disabled", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
+
+
 
 /*    @OnClick(R.id.button)
     public void onViewClicked() {
@@ -343,9 +365,11 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                         }
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
+/*
 
-                        mLocationEngine.requestLocationUpdates(mLocationEngineRequest, mLocationEngineCallback, getMainLooper());
+                        mLocationEngine.requestLocationUpdates(mLocationEngineRequest, mLocationEngineCallback, Looper.myLooper());
 
+*/
 
                         updateUI();
                     }

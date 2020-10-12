@@ -40,7 +40,8 @@ public class CreateMapPresenter {
 
         } else {
 
-            mDatabase.child("myMaps").child(currentUser.getUid()).setValue(mapDataModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+            mDatabase.child("instituteMaps").child(currentUser.getUid()).push().setValue(mapDataModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     createMapView.onCreateMapSaveSuccessful("Map saved successfully");

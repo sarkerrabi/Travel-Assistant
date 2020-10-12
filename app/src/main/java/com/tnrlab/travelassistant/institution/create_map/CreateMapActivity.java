@@ -434,6 +434,7 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
         featureCollectionForSave.features().get(0).addStringProperty("description", name);
         createMapPresenter.saveMapDataIntoDB(featureCollectionForSave);
         mapNameEnterDialog.dismiss();
+        clearEntireMap();
 
     }
 }

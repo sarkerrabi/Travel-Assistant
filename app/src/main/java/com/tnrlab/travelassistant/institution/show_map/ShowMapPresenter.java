@@ -39,9 +39,9 @@ public class ShowMapPresenter {
             showMapView.onFailedToGetCurrentUser();
 
         } else {
+            /*mDatabase.child("instituteMaps").child(currentUser.getUid())*/
 
-
-            mDatabase.child("myMaps").addValueEventListener(new ValueEventListener() {
+/*            mDatabase.child("myMaps").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot != null) {
@@ -52,6 +52,33 @@ public class ShowMapPresenter {
                                 MapDataModel mapDataModel = mydataSnapshot.getValue(MapDataModel.class);
                                 mapDataModels.add(mapDataModel);
                             }
+
+                        }
+                        showMapView.onMapDataListReady(mapDataModels);
+
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    showMapView.onMapDataListFailed(databaseError.getMessage());
+
+                }
+            });*/
+
+
+            mDatabase.child("instituteMaps").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot mydataSnapshot : dataSnapshot.getChildren()) {
+//                            Log.d("TAG_SHOW_MAP", "onDataChange: " + dataSnapshot.getKey());
+
+                            MapDataModel mapDataModel = mydataSnapshot.getValue(MapDataModel.class);
+                            mapDataModels.add(mapDataModel);
+
 
                         }
                         showMapView.onMapDataListReady(mapDataModels);
