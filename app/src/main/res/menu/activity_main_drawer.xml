@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_baseline_account_box_24"
+            android:title="@string/menu_profile" />
+
+        <item
+            android:id="@+id/nav_create_path"
+            android:icon="@drawable/created_paths"
+            android:title="Create A Route" />
+
+
+        <item
+            android:id="@+id/nav_created_path_history"
+            android:icon="@drawable/show_created_paths"
+            android:title="Show Created Route Paths" />
+
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/shared_paths"
+            android:title="Shared Paths" />
+
+
+        <item
+            android:id="@+id/nav_created_maps"
+            android:icon="@drawable/area_map"
+            android:title="Created Maps" />
+
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/exit"
+            android:title="Logout" />
+
+
+    </group>
+
+
+</menu>

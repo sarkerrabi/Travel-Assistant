@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.tnrlab.travelassistant.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_share"
+        android:name="com.tnrlab.travelassistant.ui.share.ShareFragment"
+        android:label="Shared Path"
+        tools:layout="@layout/fragment_share">
+        <action
+            android:id="@+id/action_nav_share_to_loadAPathFragment"
+            app:destination="@id/loadAPathFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_created_path_history"
+        android:name="com.tnrlab.travelassistant.ui.send.ShowCreatedPathFragment"
+        android:label="Created Route History"
+        tools:layout="@layout/fragment_show_created_path">
+        <action
+            android:id="@+id/action_nav_created_path_history_to_loadAPathFragment"
+            app:destination="@id/loadAPathFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.tnrlab.travelassistant.ui.profile.UserProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/user_profile_fragment" />
+    <fragment
+        android:id="@+id/nav_create_path"
+        android:name="com.tnrlab.travelassistant.ui.create_path.CreatePathFragment"
+        android:label="Create Route Path"
+        tools:layout="@layout/create_path_fragment">
+        <action
+            android:id="@+id/action_nav_create_path_to_routeReviewFragment"
+            app:destination="@id/routeReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/routeReviewFragment"
+        android:name="com.tnrlab.travelassistant.ui.RouteReviewFragment"
+        android:label="Route Review"
+        tools:layout="@layout/route_review_fragment">
+        <action
+            android:id="@+id/action_routeReviewFragment_to_nav_create_path"
+            app:destination="@id/nav_create_path" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadAPathFragment"
+        android:name="com.tnrlab.travelassistant.ui.load_a_path.LoadAPathFragment"
+        android:label="Path Details"
+        tools:layout="@layout/load_a_path_fragment">
+        <action
+            android:id="@+id/action_loadAPathFragment_to_followAPathFragment2"
+            app:destination="@id/followAPathFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/followAPathFragment2"
+        android:name="com.tnrlab.travelassistant.ui.follow_a_path.FollowAPathFragment"
+        android:label="Follow Path"
+        tools:layout="@layout/follow_a_path_fragment" />
+    <fragment
+        android:id="@+id/nav_created_maps"
+        android:name="com.tnrlab.travelassistant.ui.created_maps.CreatedMapsFragment"
+        android:label="Institute Area Maps"
+        tools:layout="@layout/created_maps_fragment">
+        <action
+            android:id="@+id/action_nav_created_maps_to_showMapUserFragment"
+            app:destination="@id/showMapUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showMapUserFragment"
+        android:name="com.tnrlab.travelassistant.ui.show_map_user.ShowMapUserFragment"
+        android:label="Show Map"
+        tools:layout="@layout/show_map_user_fragment" />
+
+</navigation>
