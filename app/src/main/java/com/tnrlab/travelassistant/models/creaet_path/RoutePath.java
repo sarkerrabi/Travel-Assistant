@@ -17,6 +17,9 @@ public class RoutePath {
     String timestmp;
     String timeDetails;
     String latLan;
+    float accuracy;
+    long locationTime;
+
 
     @Embedded
     SensorData sensorData;
@@ -45,6 +48,15 @@ public class RoutePath {
         this.timeDetails = timeDetails;
         this.latLan = latLan;
         this.sensorData = sensorData;
+    }
+
+
+    public float getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(float accuracy) {
+        this.accuracy = accuracy;
     }
 
     public int getId() {
@@ -126,5 +138,13 @@ public class RoutePath {
 
     public void setRoutePathID(long routePathID) {
         this.routePathID = routePathID;
+    }
+
+    public void setLocationTime(long locationTime) {
+        this.locationTime = locationTime;
+    }
+
+    public long getLocationTime() {
+        return locationTime;
     }
 }

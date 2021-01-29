@@ -524,6 +524,11 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                 routePath.setTimestmp(timestamp);
                 routePath.setSpeed(mCurrentLocation.getSpeed());
                 routePath.setLatLan(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+                routePath.setAccuracy(mCurrentLocation.getAccuracy());
+                routePath.setLocationTime(mCurrentLocation.getTime());
+
+
+
 //                mDb.routePathDao().insertRoutePath(routePath);
 
 

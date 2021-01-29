@@ -3,6 +3,7 @@ package com.tnrlab.travelassistant.ui.load_a_path;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,9 +136,26 @@ public class LoadAPathFragment extends Fragment implements
         bundle.putString("route_path", routeData);
 
         btAcclerator.setText("SPEED");
+        Gson gson1 = new Gson();
         if (routeData != null) {
             routeDetails = gson.fromJson(routeData, RouteDetails.class);
+            String raw_str = gson1.toJson(routeDetails.getRoutePathList());
+            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ raw_str );
+
+            ReduceGPSError reduceGPSError = new ReduceGPSError(routeDetails.getRoutePathList());
+
+            List<RoutePath> routePaths = reduceGPSError.reduceGPSError();
+
+
+            String filter_str = gson1.toJson(routePaths);
+            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ filter_str );
+
+            routeDetails.setRoutePathList(reduceGPSError.reduceGPSError());
+
+
+
             Toast.makeText(getContext(), String.valueOf(routeDetails.getRouteReview().getRoutePathID()), Toast.LENGTH_SHORT).show();
+
 
 
         }
