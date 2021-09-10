@@ -13,7 +13,7 @@ import com.tnrlab.travelassistant.models.creaet_path.RouteReview;
 public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "Travel_Assistant";
+    private static final String DATABASE_NAME = "Travel_Assistant.db";
     private static AppDatabase sInstance;
 
     public static AppDatabase getInstance(Context context) {

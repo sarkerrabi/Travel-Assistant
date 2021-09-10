@@ -32,6 +32,8 @@
             android:layout_marginEnd="@dimen/_16sdp"
             android:background="@drawable/border"
             android:hint="Full Name"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvInstruction"
             app:layout_constraintTop_toBottomOf="@+id/tvInstruction" />
@@ -45,6 +47,7 @@
             android:background="@drawable/border"
             android:hint="Age"
             android:inputType="number"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/etFullName"
             app:layout_constraintTop_toBottomOf="@+id/etFullName" />
@@ -58,6 +61,7 @@
             android:background="@drawable/border"
             android:hint="Email Address"
             android:inputType="textEmailAddress"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/etAge"
             app:layout_constraintTop_toBottomOf="@+id/etAge" />
@@ -71,6 +75,7 @@
             android:background="@drawable/border"
             android:hint="Password"
             android:inputType="textPassword"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/etEmail"
             app:layout_constraintTop_toBottomOf="@+id/etEmail" />
@@ -82,8 +87,9 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:background="@drawable/border"
-            android:hint="Weight"
-            android:inputType="number"
+            android:drawableRight="@drawable/ic_weight"
+            android:hint="Weight(kg)"
+            android:inputType="numberSigned|number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/etHeight"
             app:layout_constraintTop_toBottomOf="@+id/etHeight" />
@@ -119,8 +125,9 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:background="@drawable/border"
+            android:drawableRight="@drawable/ic_height"
             android:ems="10"
-            android:hint="Height"
+            android:hint="Height(cm)"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/etPass"
