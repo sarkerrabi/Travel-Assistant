@@ -50,7 +50,7 @@ public class CreateMapPresenter {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     createMapView.onCreateMapSaveFailed("Failed to save map data, check your internet connection and try again");
-                    Log.e(TAG, "onFailure: " + e.getMessage());
+//                    Log.e(TAG, "onFailure: " + e.getMessage());
 
                 }
             });

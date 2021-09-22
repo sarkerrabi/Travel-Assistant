@@ -188,21 +188,21 @@ public class CreateMapActivity extends AppCompatActivity implements OnMapReadyCa
                     fillLayerPointList.add(mapTargetPoint);
                     fillLayerPointList.add(firstPointOfPolygon);
                 }
-                Log.e("CREATE_MAP_TAG", "-----------------fillLayerPointList---------------------------");
-                Log.e("CREATE_MAP_TAG", "fillLayerPointList: " + fillLayerPointList);
+//                Log.e("CREATE_MAP_TAG", "-----------------fillLayerPointList---------------------------");
+//                Log.e("CREATE_MAP_TAG", "fillLayerPointList: " + fillLayerPointList);
                 listOfList = new ArrayList<>();
                 listOfList.add(fillLayerPointList);
                 List<Feature> finalFeatureList = new ArrayList<>();
                 finalFeatureList.add(Feature.fromGeometry(Polygon.fromLngLats(listOfList)));
-                Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
+//                Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
 
-                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + finalFeatureList);
+//                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + finalFeatureList);
 
                 FeatureCollection newFeatureCollection = FeatureCollection.fromFeatures(finalFeatureList);
-                Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
+//                Log.e("CREATE_MAP_TAG", "-----------------finalFeatureList---------------------------");
 
 
-                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + newFeatureCollection);
+//                Log.e("CREATE_MAP_TAG", "finalFeatureList: " + newFeatureCollection);
 
 
                 if (fillSource != null) {

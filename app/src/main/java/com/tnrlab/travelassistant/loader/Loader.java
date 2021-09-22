@@ -6,6 +6,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.tnrlab.travelassistant.R;
 
 
@@ -39,11 +40,13 @@ public class Loader {
 
         //...now load that gif which we put inside the drawable folder here with the help of Glide
 
+
+        DrawableImageViewTarget drawableImageViewTarget = new DrawableImageViewTarget(gifImageView);
+
+
         Glide.with(activity)
-                .load(R.drawable.splash_animation)
-                .placeholder(R.drawable.splash_animation)
-                .centerCrop()
-                .into(gifImageView);
+                .load(R.raw.splash_animation)
+                .into(drawableImageViewTarget);
 
         //...finaly show it
         dialog.show();

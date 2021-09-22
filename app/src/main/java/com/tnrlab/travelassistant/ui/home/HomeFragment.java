@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -15,7 +16,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.karumi.dexter.Dexter;
@@ -62,7 +66,10 @@ public class HomeFragment extends Fragment implements
     private MapView mapView;
     private String geojsonSourceLayerId = "geojsonSourceLayerId";
     private LocationManager mLocationManager;
+    private boolean state = false;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -71,18 +78,38 @@ public class HomeFragment extends Fragment implements
         ButterKnife.bind(this, root);
 
         String user = null;
-        checkPermission();
+        //checkPermission();
 
         mLocationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        checkGpsStatus();
-
-
         mapView = root.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+
 
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
+    }
+
+    private void reloadFragment() {
+        FragmentTransaction ft = null;
+        if (getFragmentManager() != null) {
+            ft = getFragmentManager().beginTransaction();
+        }
+        if (Build.VERSION.SDK_INT >= 26) {
+            assert ft != null;
+            ft.setReorderingAllowed(false);
+        }
+        assert ft != null;
+        ft.detach(this).attach(this).commit();
+
+        state = false;
     }
 
     private void checkGpsStatus() {
@@ -90,34 +117,21 @@ public class HomeFragment extends Fragment implements
 
         assert mLocationManager != null;
         boolean gpsStatus = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         if (gpsStatus) {
-            Toast.makeText(getContext(), "GPS Is Enabled", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), "GPS Is Enabled", Toast.LENGTH_SHORT).show();
+
+            if (state) {
+                reloadFragment();
+            }
+
         } else {
             Toast.makeText(getContext(), "GPS Is Disabled", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
 
-    private void checkPermission() {
-        Dexter.withActivity(getActivity())
-                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION).withListener(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                    Toast.makeText(getContext(), "Thank you", Toast.LENGTH_SHORT).show();
-                } else {
-                    checkPermission();
-                }
-            }
 
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-
-            }
-        }).check();
-    }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
@@ -162,6 +176,7 @@ public class HomeFragment extends Fragment implements
 
 
         } else {
+            state = true;
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(getActivity());
         }
@@ -181,6 +196,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onPermissionResult(boolean granted) {
         if (granted) {
+
             mapboxMap.getStyle(new Style.OnStyleLoaded() {
                 @Override
                 public void onStyleLoaded(@NonNull Style style) {
@@ -207,7 +223,9 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        checkGpsStatus();
         mapView.onResume();
+
     }
 
     @Override

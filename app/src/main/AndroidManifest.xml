@@ -19,6 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:exported="true"
         android:theme="@style/AppTheme">
         <activity android:name=".institution.show_map.ShowMapActivity"></activity>
         <activity android:name=".institution.institute_profile.InstituteProfileActivity"></activity>

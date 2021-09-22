@@ -43,6 +43,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -179,6 +185,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
         assert mLocationManager != null;
         boolean gpsStatus = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (gpsStatus) {
+            checkPermission();
             Toast.makeText(getContext(), "GPS Is Enabled", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "GPS Is Disabled", Toast.LENGTH_SHORT).show();
@@ -356,7 +363,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                        Log.i(TAG, "All location settings are satisfied.");
+//                        Log.i(TAG, "All location settings are satisfied.");
 
                         //noinspection MissingPermission
                         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -386,7 +393,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                                     ResolvableApiException rae = (ResolvableApiException) e;
                                     rae.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
                                 } catch (IntentSender.SendIntentException sie) {
-                                    Log.i(TAG, "PendingIntent unable to execute request.");
+//                                    Log.i(TAG, "PendingIntent unable to execute request.");
                                 }
                                 break;
                             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
@@ -580,7 +587,7 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
                     } else {
 
                         // No result for your request were found.
-                        Log.d(TAG, "onResponse: No result found");
+//                        Log.d(TAG, "onResponse: No result found");
                         if (saveState == 0) {
                             sharedDB.saveStartPlaceInfo(mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
                         } else if (saveState == 1) {
@@ -610,12 +617,28 @@ public class CreatePathFragment extends Fragment implements OnMapReadyCallback, 
 
     }
 
+    private void checkPermission() {
 
+        Dexter.withContext(getActivity())
+                .withPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        checkPermission();
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        /* ... */
+                    }
+                }).check();
+    }
     @OnClick({R.id.start_updates_button, R.id.stop_updates_button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.start_updates_button:
                 if (!mRequestingLocationUpdates) {
+
                     mRequestingLocationUpdates = true;
                     setButtonsEnabledState();
                     startLocationUpdates();

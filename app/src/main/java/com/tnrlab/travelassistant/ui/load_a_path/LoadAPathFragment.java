@@ -140,7 +140,7 @@ public class LoadAPathFragment extends Fragment implements
         if (routeData != null) {
             routeDetails = gson.fromJson(routeData, RouteDetails.class);
             String raw_str = gson1.toJson(routeDetails.getRoutePathList());
-            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ raw_str );
+//            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ raw_str );
 
             ReduceGPSError reduceGPSError = new ReduceGPSError(routeDetails.getRoutePathList());
 
@@ -148,7 +148,7 @@ public class LoadAPathFragment extends Fragment implements
 
 
             String filter_str = gson1.toJson(routePaths);
-            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ filter_str );
+//            Log.e("TAG_LOAD_PATH", "onActivityCreated: "+ filter_str );
 
             routeDetails.setRoutePathList(reduceGPSError.reduceGPSError());
 

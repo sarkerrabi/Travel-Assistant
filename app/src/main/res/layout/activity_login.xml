@@ -12,7 +12,7 @@
         android:layout_width="@dimen/_70ssp"
         android:layout_height="@dimen/_70sdp"
         android:layout_marginTop="64dp"
-        android:src="@drawable/splash_animation"
+        android:src="@drawable/image_icon"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"

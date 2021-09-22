@@ -5,7 +5,10 @@
       <map>
         <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/drawable/ic_height.xml" value="0.31574074074074077" />
         <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/drawable/ic_weight.xml" value="0.31574074074074077" />
+        <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/layout/activity_login.xml" value="0.75" />
+        <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/layout/activity_main.xml" value="0.12047101449275362" />
         <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
+        <entry key="..\:/Users/Md Rabiul Ali Sarker/Desktop/Final-app-release/Travel-Assistant/app/src/main/res/layout/activity_splash.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -167,9 +167,9 @@ public class FollowAPathFragment extends Fragment implements
 
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLatitude());
-            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLongitude());
-            Log.e(TAG, "updateLocationUI: " + mLastUpdateTime);
+//            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLatitude());
+//            Log.e(TAG, "updateLocationUI: " + mCurrentLocation.getLongitude());
+//            Log.e(TAG, "updateLocationUI: " + mLastUpdateTime);
             double distance = 0;
             Point mCurrentPoint = Point.fromLngLat(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude());
             Point destinationEnd = Point.fromLngLat(routeDetails.getRoutePathList().get(routeDetails.getRoutePathList().size() - 1).getLongitude(),
@@ -332,7 +332,7 @@ public class FollowAPathFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                Log.e("FOLLOW_PATH", "Error: " + throwable.getMessage());
+//                Log.e("FOLLOW_PATH", "Error: " + throwable.getMessage());
 
             }
         });
