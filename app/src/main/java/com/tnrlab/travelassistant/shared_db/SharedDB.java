@@ -100,5 +100,13 @@ public class SharedDB {
         return sharedPreferences.getBoolean("isLastReviewDone", true);
     }
 
+    public boolean isLocationPermissionAgreed(){
+        return sharedPreferences.getBoolean("LOCATION_PERMISSION_AGREED", false);
+    }
+    public void saveLocationPermissionAgreed(boolean isAgreed) {
+        editor.putBoolean("LOCATION_PERMISSION_AGREED", isAgreed);
+        editor.apply();
+    }
+
 
 }

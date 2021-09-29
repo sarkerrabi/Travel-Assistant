@@ -1,9 +1,10 @@
 package com.tnrlab.travelassistant;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
@@ -11,7 +12,6 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.karumi.dexter.Dexter;
@@ -19,7 +19,6 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.tnrlab.travelassistant.common.Common;
 import com.tnrlab.travelassistant.institution.institute.InstituteMainActivity;
 import com.tnrlab.travelassistant.institution.login.LoginActivity;
 import com.tnrlab.travelassistant.shared_db.SharedDB;
@@ -53,7 +52,11 @@ public class SplashActivity extends AppCompatActivity {
                 .load(R.raw.splash_animation)
                 .into(drawableImageViewTarget);
 
-        startApp();
+        if (!sharedDB.isLocationPermissionAgreed()) {
+            showAlert();
+        } else {
+            startApp();
+        }
 
 
 //        boolean hasAndroidPermissions = Common.hasPermissions(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -67,6 +70,35 @@ public class SplashActivity extends AppCompatActivity {
 //            checkPermission();
 //        }
 
+    }
+
+    private void showAlert() {
+        new AlertDialog.Builder(this)
+                .setTitle("Travel Assistant")
+                .setCancelable(false)
+                .setMessage("Travel Assistant app collects location data to track your traveled path & visualized data even when the app is closed or not in use.")
+
+                .setPositiveButton(R.string.agree, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        sharedDB.saveLocationPermissionAgreed(true);
+                        startApp();
+                        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(intent);
+
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(R.string.disagree, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
